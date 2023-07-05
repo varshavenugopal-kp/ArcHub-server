@@ -12,6 +12,8 @@ import { blockuser } from "../../App/usecases/admin/userBlock";
 import { Unblockuser } from "../../App/usecases/admin/userUnblock";
 import { blockCompany } from "../../App/usecases/admin/companyBlock";
 import { unblockCompany } from "../../App/usecases/admin/companyUnblock";
+import { showRequests } from "../../App/usecases/admin/Requests";
+import { acceptCompany } from "../../App/usecases/admin/requestAccept";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 
@@ -131,4 +133,27 @@ export const companyUnblockController=async(req:Request,res:Response)=>{
 
 }
 
+export const companyRequestsController=async(req:Request,res:Response)=>{
+  try{
+    const companyData=await showRequests(companyRepository)();
+    console.log("haai varsha",companyData);
+    if(companyData){
+        res.json({message:'Data found',companyData})
+    }
+    
 
+  }catch(error){
+    res.json({message:'Internal server error'})
+  }
+}
+
+export const requestAcceptController=async(req:Request,res:Response)=>{
+  const{id}=req.body
+  try{
+    const blocked=await acceptCompany(companyRepository)(id)
+  }
+  catch(error){
+    console.log(error);
+    
+  }
+}

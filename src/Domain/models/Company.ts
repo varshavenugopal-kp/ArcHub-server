@@ -5,5 +5,7 @@ export interface Company{
     state?:string,
     email?:string,
     password?:string
+    file?:string
     status?:boolean
+    regStatus?:boolean
 }

@@ -27,11 +27,22 @@ const companySchema= new Schema<Company>({
         type:String,
         required:true
     },
+    file:{
+        type:String,
+        required:true
+    },
     status:{
         type:Boolean,
-        default:true,
+        default:false,
         required:true
-       }
+    },
+    regStatus:{
+        type:Boolean,
+        default:false,
+        required:true
+    }
+    
+
 
 })
 export const companyModel:MongodbCompany=mongoose.connection.model<Document<any,any,any>&Company>('company',companySchema)

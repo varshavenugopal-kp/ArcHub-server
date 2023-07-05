@@ -19,3 +19,4 @@ export const connectToDatabase = async (): Promise<void> => {
   };
   
   export default connectToDatabase;
+  

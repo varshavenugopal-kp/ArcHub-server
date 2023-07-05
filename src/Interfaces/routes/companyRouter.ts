@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { companyLoginController, companyRegisterController } from "../controllers/companyControllers";
+import { companyLoginController, companyRegisterController, jobAddController, projectAddController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
 const router = Router();
 
 router.post('/register',companyRegisterController)
 router.post('/login',companyLoginController)
+router.post('/addjob',jobAddController)
+router.post('/addProject',projectAddController)
 // router.post('/user-block',userBlockController)
 export default router;

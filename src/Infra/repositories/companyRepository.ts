@@ -16,6 +16,8 @@ export type companyRepository={
     showCompany:()=>Promise<Company[]>
     blockCompany(id:string):Promise<Company|void|updateResult>
     unblockCompany(id:string):Promise<Company|void|updateResult>
+    showRequests:()=>Promise<Company[]>
+    requestAccept(id:string):Promise<Company|void|updateResult>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -31,7 +33,7 @@ export type companyRepository={
     };
 
     const showCompany=async():Promise<Company[]>=>{
-        const companyData=await companyModel.find()
+        const companyData=await companyModel.find({regStatus:true})
         console.log("companyData",companyData);
         return companyData.map((company)=>company.toObject())
         
@@ -45,11 +47,25 @@ export type companyRepository={
         const result=await companyModel.updateOne({_id:new ObjectId(id)},{$set:{status:true}})
         return result
     }
+    const showRequests=async():Promise<Company[]>=>{
+        const requests=await companyModel.find({regStatus:false});
+        console.log("requests",requests);
+        
+        return requests.map((company)=>company.toObject())
+      };
+      const requestAccept=async(id:string):Promise<Company|void|updateResult>=>{
+        const result=await companyModel.updateOne({_id:new ObjectId(id)},{$set:{regStatus:true,status:true}})
+        console.log("nnnn",result);
+        
+        return result
+    }
     return{
         create,
         loginCompany,
         showCompany,
         blockCompany,
-        unblockCompany
+        unblockCompany,
+        showRequests,
+        requestAccept
     }
  }
