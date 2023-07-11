@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { companyLoginController, companyRegisterController, jobAddController, projectAddController } from "../controllers/companyControllers";
+import { aboutAddController, companyLoginController, companyRegisterController, detailsAddController, detailsController, jobAddController, projectAddController, projectController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
+import { companyAuth } from "../middlewares/companyAuth";
 const router = Router();
 
 router.post('/register',companyRegisterController)
 router.post('/login',companyLoginController)
-router.post('/addjob',jobAddController)
+router.post('/addjob',companyAuth,jobAddController)
 router.post('/addProject',projectAddController)
+router.post('/detailsAdd',detailsAddController)
+router.post('/addAbout',aboutAddController)
+router.get('/details/:cid',detailsController)
+router.get('/project/:cid',companyAuth,projectController)
 // router.post('/user-block',userBlockController)
-export default router;
+export default router;  

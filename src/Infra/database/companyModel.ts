@@ -40,6 +40,18 @@ const companySchema= new Schema<Company>({
         type:Boolean,
         default:false,
         required:true
+    },
+    details:{
+        type:Object,
+        required:true
+    },
+    description:{
+        type:String,
+        required:true
+    },
+    projects:{
+        type:Array,
+        required:true
     }
     
 

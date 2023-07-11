@@ -10,6 +10,10 @@ import { addProject } from "../../App/usecases/Company/AddProject";
 import { ProjectModel } from "../../Infra/database/projectModel";
 import { ProjectRepositoryImpl } from "../../Infra/repositories/projectRepository";
 import mongoose from "mongoose";
+import { addDetails } from "../../App/usecases/Company/addDetails";
+import { addAbout } from "../../App/usecases/Company/addAbout";
+import { viewDetails } from "../../App/usecases/Company/ViewDetails";
+import { viewProjects } from "../../App/usecases/Company/ViewProjects";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 
@@ -42,8 +46,11 @@ export const companyLoginController=async(req:Request,res:Response)=>{
 
     try{
         const company=await loginCompany(companyRepository)(email,password,true,true);
+         console.log("lllooo");
          
         if(company){
+            console.log("lllll");
+            
             const expirationTime = Math.floor(Date.now() / 1000) + 1 * 60 * 60;
             const payload = {
               
@@ -87,20 +94,47 @@ export const companyLoginController=async(req:Request,res:Response)=>{
     }
 
 
-  export const projectAddController=async(req:Request,res:Response)=>{
+//   export const projectAddController=async(req:Request,res:Response)=>{
+//     console.log("vvvvv",req.body);
+    
+//     const {pname,cid,description,url}=req.body
+//     console.log("pname",pname);
+//     console.log("cid",cid);
+//     console.log("description",description);
+//     console.log("url",url);
+    
+//     try{
+//         let cmpnyId=new mongoose.Types.ObjectId(cid)
+//         const projects=await addProject(ProjectRepository)(cmpnyId,pname,description,url)
+//         console.log("projectsss",projects);
+//         if(projects){
+//             console.log("varsha");
+//             res.status(201).json({ message: "successful", projects });
+            
+            
+//         }
+        
+//     }catch(error){
+//         res.status(500).json({ message: "Internal server error" });
+        
+//     }
+//   }
+
+
+export const projectAddController=async(req:Request,res:Response)=>{
     console.log("vvvvv",req.body);
     
-    const {pname,cid,description,url}=req.body
-    console.log("pname",pname);
+    const {cid,...projects}=req.body
+    // console.log("pname",pname);
     console.log("cid",cid);
-    console.log("description",description);
-    console.log("url",url);
+    // console.log("description",description);
+    // console.log("url",url);
     
     try{
         let cmpnyId=new mongoose.Types.ObjectId(cid)
-        const projects=await addProject(ProjectRepository)(cmpnyId,pname,description,url)
-        console.log("projectsss",projects);
-        if(projects){
+        const projectss=await addProject(companyRepository)(cmpnyId,projects)
+        console.log("projectsss",projectss);
+        if(projectss){
             console.log("varsha");
             res.status(201).json({ message: "successful", projects });
             
@@ -112,3 +146,93 @@ export const companyLoginController=async(req:Request,res:Response)=>{
         
     }
   }
+
+
+
+  export const detailsAddController=async(req:Request,res:Response)=>{
+    console.log("moynthpranav",req.body);
+    
+    const {cId,datas}=req.body
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+       const details=await addDetails(companyRepository)(cmpnyId,datas)
+       console.log("detailssss",details);
+       
+       if(details){
+        console.log("varsha");
+        res.status(201).json({ message: "successful", details });
+        
+        
+    }
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error" });
+        
+    }
+   
+
+}
+
+
+export const aboutAddController=async(req:Request,res:Response)=>{
+    console.log("moynthadhin",req.body);
+    
+    const {cId}=req.body
+    const {description}=req.body
+    console.log("about",description);
+    
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+       const details=await addAbout(companyRepository)(cmpnyId,description)
+       console.log("detailssss",details);
+       
+       if(details){
+        console.log("varsha");
+        res.status(201).json({ message: "successful", details });
+    }
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error" });
+        
+    }
+   
+
+}
+
+export const detailsController=async(req:Request,res:Response)=>{
+    const cId=req.params.cid
+    console.log("params:",cId);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+        const details=await viewDetails(companyRepository)(cmpnyId)
+        if(details){
+            console.log("varshaaaaaayyyyyyyyyyy",details);
+            res.status(201).json({ message: "successful", details });
+        }
+        }
+        catch(error){
+            res.status(500).json({ message: "Internal server error" });
+            
+        }
+       
+    
+    }
+
+   export const projectController=async(req:Request,res:Response)=>{
+    const cId=req.params.cid
+    console.log("cmpid",cId);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+        const projects=await viewProjects(ProjectRepository)(cmpnyId)
+        if(projects){
+            console.log("projects",projects);
+            res.status(201).json({ message: "successful", projects });
+            
+        }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+           
+    }
+    
+   }
+   

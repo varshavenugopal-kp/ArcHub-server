@@ -1,4 +1,7 @@
+import mongoose from "mongoose"
+
 export interface Company{
+    
     cname?:string,
     location?:string,
     district?:string,
@@ -8,4 +11,7 @@ export interface Company{
     file?:string
     status?:boolean
     regStatus?:boolean
+    details?:object
+    description?:string
+    projects?:Array<object>
 }

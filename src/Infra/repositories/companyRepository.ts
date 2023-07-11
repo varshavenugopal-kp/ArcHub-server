@@ -1,3 +1,5 @@
+import mongoos from "mongoose";
+import { UpdateWriteOpResult } from "mongoose";
 import { Company } from "../../Domain/models/Company";
 import { MongodbCompany, companyModel } from "../database/companyModel";
 import { MongoDbUser, userModel } from '../database/userModel';
@@ -18,6 +20,11 @@ export type companyRepository={
     unblockCompany(id:string):Promise<Company|void|updateResult>
     showRequests:()=>Promise<Company[]>
     requestAccept(id:string):Promise<Company|void|updateResult>
+    detailsAdd:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
+    projectAdd:(projects:Array<object>,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
+    aboutAdd:(cId:mongoos.Types.ObjectId,description:string)=>Promise<UpdateWriteOpResult>
+    viewDetails:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
+    // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -58,7 +65,38 @@ export type companyRepository={
         console.log("nnnn",result);
         
         return result
+    };
+    const detailsAdd=async(details:object,id:mongoos.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",details);
+        
+        const createdDetails=await companyModel.updateOne({ _id:id}, { $set: {details: details } })
+        return createdDetails
     }
+
+    const projectAdd=async(projects:Array<object>,id:mongoos.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
+        const createdProjects=await companyModel.updateOne({_id:id},{ $push: { projects:projects}})
+        console.log(".......",projects);
+        
+        return createdProjects
+    }
+
+    const aboutAdd=async(cId:mongoos.Types.ObjectId,description:string):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",description);
+        
+        const createdAbout=await companyModel.updateOne({ _id:cId}, { $set: {description:description } })
+        return createdAbout
+    }
+
+    const viewDetails=async(cId:mongoos.Types.ObjectId):Promise<Company|null>=>{
+        const details=await companyModel.findOne({_id:cId})
+        return details
+        
+    }
+    // const viewAbout=async(cId:mongoos.Types.ObjectId):Promise<Company|null>=>{
+    //     const details=await companyModel.findOne({_id:cId})
+    //     return details
+        
+    // }
     return{
         create,
         loginCompany,
@@ -66,6 +104,10 @@ export type companyRepository={
         blockCompany,
         unblockCompany,
         showRequests,
-        requestAccept
+        requestAccept,
+       detailsAdd,
+       projectAdd,
+       aboutAdd,
+       viewDetails
     }
  }

@@ -8,6 +8,8 @@ import adminRouter from "./src/Interfaces/routes/adminRoutes"
 import connectToDatabase from "./src/Infra/database/dbConfig";
 
 import { errorHandler } from "./src/Utils/errorHandler";
+import { companyAuth } from "./src/Interfaces/middlewares/companyAuth";
+import { adminAuth } from "./src/Interfaces/middlewares/adminAuth";
 require('dotenv').config();
 const app=express()
 app.listen(3001,()=>{
@@ -17,6 +19,7 @@ connectToDatabase()
 
 app.use(cookieParser())
 app.use(express.json())
+
 app.use(errorHandler);
 app.use(cors({
     origin:["http://localhost:3000"],
