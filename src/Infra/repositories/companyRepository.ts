@@ -24,6 +24,7 @@ export type companyRepository={
     projectAdd:(projects:Array<object>,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
     aboutAdd:(cId:mongoos.Types.ObjectId,description:string)=>Promise<UpdateWriteOpResult>
     viewDetails:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
+    addImage:(cid:mongoos.Types.ObjectId,image:string)=>Promise<UpdateWriteOpResult>
     // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
 }
 
@@ -97,6 +98,17 @@ export type companyRepository={
     //     return details
         
     // }
+    const addImage=async(cid:mongoos.Types.ObjectId,image:string):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",image);
+        console.log("ooo",cid);
+        
+        
+        const createdImage=await companyModel.updateOne({ _id:cid}, { $set: {image:image } })
+        console.log(createdImage);
+        return createdImage
+        
+        
+    }
     return{
         create,
         loginCompany,
@@ -108,6 +120,7 @@ export type companyRepository={
        detailsAdd,
        projectAdd,
        aboutAdd,
-       viewDetails
+       viewDetails,
+       addImage
     }
  }

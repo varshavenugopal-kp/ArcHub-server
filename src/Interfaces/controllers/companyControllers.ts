@@ -14,6 +14,7 @@ import { addDetails } from "../../App/usecases/Company/addDetails";
 import { addAbout } from "../../App/usecases/Company/addAbout";
 import { viewDetails } from "../../App/usecases/Company/ViewDetails";
 import { viewProjects } from "../../App/usecases/Company/ViewProjects";
+import { addImage } from "../../App/usecases/Company/Addimage";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 
@@ -236,3 +237,24 @@ export const detailsController=async(req:Request,res:Response)=>{
     
    }
    
+   export const imageAddController=async(req:Request,res:Response)=>{
+    const url=req.body
+    const cid=req.params.cid
+    console.log('url:',url);
+    console.log("iiidddsss",cid);
+    
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cid)
+        let image=await addImage(companyRepository)(cmpnyId,url.fileUrl)
+        if(image){
+            console.log("kjkjkjkj",image);
+            
+            res.status(201).json({ message: "successful", image });
+        
+        }
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error" });
+        
+    }
+   }

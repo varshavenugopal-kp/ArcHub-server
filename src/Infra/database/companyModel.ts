@@ -52,6 +52,10 @@ const companySchema= new Schema<Company>({
     projects:{
         type:Array,
         required:true
+    },
+    image:{
+        type:String,
+        
     }
     
 
