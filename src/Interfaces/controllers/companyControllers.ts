@@ -15,6 +15,9 @@ import { addAbout } from "../../App/usecases/Company/addAbout";
 import { viewDetails } from "../../App/usecases/Company/ViewDetails";
 import { viewProjects } from "../../App/usecases/Company/ViewProjects";
 import { addImage } from "../../App/usecases/Company/Addimage";
+import { editAbout } from "../../App/usecases/Company/EditAbout";
+import { editDetails } from "../../App/usecases/Company/editDetails";
+// import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 
@@ -26,8 +29,8 @@ const companyRepository=companyRepositoryImpl(db)
 const JobRepository=JobRepositoryImpl(jobdb)
 const ProjectRepository=ProjectRepositoryImpl(projectdb)
 export const companyRegisterController=async(req:Request,res:Response)=>{
+    console.log(req.body)
     const {cname,location,district,state,email,password,file}=req.body
-    console.log("data:",req.body);
     try{
         const company=await signupCompany(companyRepository)(cname,location,district,state,email,password,file);
         if(company){
@@ -258,3 +261,61 @@ export const detailsController=async(req:Request,res:Response)=>{
         
     }
    }
+
+   
+
+   export const detailsEditController=async(req:Request,res:Response)=>{
+    const cId=req.params.cid
+    console.log("params:",cId);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+        const details=await viewDetails(companyRepository)(cmpnyId)
+        if(details){
+            console.log("ajaaaayyyy",details);
+            res.status(201).json({ message: "successful", details });
+        }
+        }
+        catch(error){
+            res.status(500).json({ message: "Internal server error" });
+            
+        }
+       
+
+}
+
+export const getAboutController=async(req:Request,res:Response)=>{
+    const cId=req.params.cid
+    console.log("Id here",cId);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+        const details=await viewDetails(companyRepository)(cmpnyId)
+        if(details){
+            console.log("varshhhha",details);
+            res.status(201).json({ message: "successful", details });
+        }
+        }
+        catch(error){
+            res.status(500).json({ message: "Internal server error" });
+              
+    }
+    
+}
+
+export const EditAboutController=async(req:Request,res:Response)=>{
+    const {data,cid}=req.body
+    console.log("this is about",cid);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cid)
+        const about=await editAbout(companyRepository)(cmpnyId,data)
+        if(about){
+            console.log("ahhhh",about);
+            res.status(201).json({ message: "successful", about });
+        }
+        }
+        catch(error){
+            res.status(500).json({ message: "Internal server error" });
+            
+        }
+    
+}
+    

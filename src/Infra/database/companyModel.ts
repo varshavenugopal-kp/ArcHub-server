@@ -42,12 +42,10 @@ const companySchema= new Schema<Company>({
         required:true
     },
     details:{
-        type:Object,
-        required:true
+        type:Object
     },
     description:{
         type:String,
-        required:true
     },
     projects:{
         type:Array,

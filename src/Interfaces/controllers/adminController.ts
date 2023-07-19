@@ -14,6 +14,10 @@ import { blockCompany } from "../../App/usecases/admin/companyBlock";
 import { unblockCompany } from "../../App/usecases/admin/companyUnblock";
 import { showRequests } from "../../App/usecases/admin/Requests";
 import { acceptCompany } from "../../App/usecases/admin/requestAccept";
+import { categoryAdd } from "../../App/usecases/admin/CategoryAdd";
+import { categoryModel } from "../../Infra/database/Category";
+import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
+import { categoryList } from "../../App/usecases/admin/CategoryList";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 
@@ -21,9 +25,11 @@ const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 const db=adminModel;
 const userdb=userModel;
 const companydb=companyModel
+const CategoryDb=categoryModel
 const adminRepository=adminRepositoryImpl(db)
 const userRepository=UserRepositoryImpl(userdb)
 const companyRepository=companyRepositoryImpl(companydb)
+const categoryRepository=CategoryRepositoryImpl(CategoryDb)
 
 export const adminLoginController=async(req:Request,res:Response)=>{
     const {email,password}=req.body
@@ -155,5 +161,34 @@ export const requestAcceptController=async(req:Request,res:Response)=>{
   catch(error){
     console.log(error);
     
+  }
+}
+export const categoryAddController=async(req:Request,res:Response)=>{
+  console.log("ccccc",req.body);
+  
+  const {category,file}=req.body
+  console.log("category",category);
+
+  try{
+    const addedData=await categoryAdd(categoryRepository)(category,file)
+    if(addedData){
+      res.status(201).json({ message: "successful", addedData });
+            
+    }
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+        
+  }
+  
+}
+
+export const categoryController=async(req:Request,res:Response)=>{
+  try{
+    const categories=await categoryList(categoryRepository)()
+    if(categories){
+      res.json({message:'Data found',categories})
+    }
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
   }
 }

@@ -25,13 +25,21 @@ export type companyRepository={
     aboutAdd:(cId:mongoos.Types.ObjectId,description:string)=>Promise<UpdateWriteOpResult>
     viewDetails:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
     addImage:(cid:mongoos.Types.ObjectId,image:string)=>Promise<UpdateWriteOpResult>
+    editAbout:(cid:mongoos.Types.ObjectId,data:string)=>Promise<UpdateWriteOpResult>
     // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
+    detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
-    const create = async(company:Company):Promise<Company>=>{
-        const createdCompany=await companyModel.create(company);
-        return createdCompany.toObject();
+    const create = async(company:Company):Promise<Company|any>=>{
+        try{
+
+            const createdCompany=await companyModel.create(company);
+            console.log("created",createdCompany);
+            return createdCompany.toObject();
+        }catch(error){
+            console.log(error)
+        }
     };
 
     const loginCompany=async(email:string):Promise<Company|null>=>{
@@ -109,6 +117,20 @@ export type companyRepository={
         
         
     }
+
+    const editAbout=async(cid:mongoos.Types.ObjectId,data:string):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",data);
+        
+        const aboutEdit=await companyModel.updateOne({ _id:cid}, { $set: {description:data } })
+        return aboutEdit
+    }
+    const detailsEdit=async(details:object,id:mongoos.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
+        
+        console.log("ssss",details);
+        
+        const createdDetails=await companyModel.updateOne({ _id:id}, { $set: {details: details } })
+        return createdDetails
+    }
     return{
         create,
         loginCompany,
@@ -121,6 +143,8 @@ export type companyRepository={
        projectAdd,
        aboutAdd,
        viewDetails,
-       addImage
+       addImage,
+       editAbout,
+       detailsEdit
     }
  }

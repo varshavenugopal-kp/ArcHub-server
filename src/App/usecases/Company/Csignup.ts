@@ -10,6 +10,7 @@ email,
 password,
 file
 };
+console.log(newCompany,"usecase")
 const createdCompany=await CompanyRepository.create(newCompany)
 
 return createdCompany
