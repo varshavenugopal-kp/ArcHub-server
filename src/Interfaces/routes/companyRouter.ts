@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  EditAboutController, aboutAddController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, imageAddController, jobAddController, projectAddController, projectController } from "../controllers/companyControllers";
+import {  EditAboutController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getServiceController, imageAddController, jobAddController, projectAddController, projectController, serviceController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
 import { companyAuth } from "../middlewares/companyAuth";
 import { adminAuth } from "../middlewares/adminAuth";
@@ -17,5 +17,8 @@ router.post('/imageAdd/:cid',imageAddController)
 router.post('/editAbout',EditAboutController)
 router.get('/getAbout/:cid',getAboutController)
 router.get('/detailsEdit/:cid',detailsEditController)
+router.get('/category-list',categoryController)
+router.post('/addServices',serviceController)
+router.get('/getServices/:cid',getServiceController)
 // router.post('/user-block',userBlockController)
 export default router;  

@@ -51,6 +51,10 @@ const companySchema= new Schema<Company>({
         type:Array,
         required:true
     },
+    services:{
+        type:Array,
+    
+    },
     image:{
         type:String,
         

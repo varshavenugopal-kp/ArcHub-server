@@ -17,6 +17,10 @@ import { viewProjects } from "../../App/usecases/Company/ViewProjects";
 import { addImage } from "../../App/usecases/Company/Addimage";
 import { editAbout } from "../../App/usecases/Company/EditAbout";
 import { editDetails } from "../../App/usecases/Company/editDetails";
+import { getCategories } from "../../App/usecases/user/CategoryList";
+import { categoryModel } from "../../Infra/database/Category";
+import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
+import { addServices } from "../../App/usecases/Company/addService";
 // import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
@@ -25,9 +29,11 @@ const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
 const db=companyModel;
 const jobdb=jobModel;
 const projectdb=ProjectModel
+const categorydb=categoryModel
 const companyRepository=companyRepositoryImpl(db)
 const JobRepository=JobRepositoryImpl(jobdb)
 const ProjectRepository=ProjectRepositoryImpl(projectdb)
+const categoryRepository=CategoryRepositoryImpl(categorydb)
 export const companyRegisterController=async(req:Request,res:Response)=>{
     console.log(req.body)
     const {cname,location,district,state,email,password,file}=req.body
@@ -318,4 +324,54 @@ export const EditAboutController=async(req:Request,res:Response)=>{
         }
     
 }
+ export const categoryController=async(req:Request,res:Response)=>{
+    try{
+        const categories=await getCategories(categoryRepository)()
+        if(categories){
+            res.json({message:'Data found',categories})
+          }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+    }
+ }
     
+export const serviceController=async(req:Request,res:Response)=>{
+   
+   const {cid,...categories}=req.body
+   console.log("how are you",categories);
+   
+   try{
+    let cmpId=new mongoose.Types.ObjectId(cid)
+    const services=await addServices(companyRepository)(cmpId,categories)
+       console.log("detailssss",services);
+       
+       if(services){
+        console.log("varsha");
+        res.status(201).json({ message: "successful", services });
+        
+        
+    }
+    }
+    catch(error){
+        res.status(500).json({ message: "Internal server error" });
+        
+    }
+   
+
+}
+export const getServiceController=async(req:Request,res:Response)=>{
+    const cId=req.params.cid
+    console.log("cmpid",cId);
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cId)
+        const services=await viewDetails(companyRepository)(cmpnyId)
+        if(services){
+            console.log("projects",services);
+            res.status(201).json({ message: "successful", services });
+            
+        }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+           
+    }
+}

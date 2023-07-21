@@ -28,6 +28,8 @@ export type companyRepository={
     editAbout:(cid:mongoos.Types.ObjectId,data:string)=>Promise<UpdateWriteOpResult>
     // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
     detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
+    getCompany:(cid:mongoos.Types.ObjectId)=>Promise<Company|null>
+    addServices:(services:Array<object>,cid:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -131,6 +133,21 @@ export type companyRepository={
         const createdDetails=await companyModel.updateOne({ _id:id}, { $set: {details: details } })
         return createdDetails
     }
+
+    const getCompany=async(cid:mongoos.Types.ObjectId):
+    Promise<Company|null>=>{
+        const company=await companyModel.findOne({_id:cid})
+        console.log("varsha",company);
+        return company
+    }
+    const addServices=async(services:Array<object>,cid:mongoos.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",services);
+        
+        const createdServices=await companyModel.updateOne({ _id:cid}, { $push: {services: services } })
+        console.log("....",services);
+        
+        return createdServices
+    }
     return{
         create,
         loginCompany,
@@ -145,6 +162,8 @@ export type companyRepository={
        viewDetails,
        addImage,
        editAbout,
-       detailsEdit
+       detailsEdit,
+       getCompany,
+       addServices
     }
  }

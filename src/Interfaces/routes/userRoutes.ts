@@ -7,8 +7,9 @@ router.post('/login',userLoginController);
 router.get('/getCategory',getCategoryController)
 router.get('/getCompanyDetails/:cid',getCompanyController)
 router.get('/getjobs',getjobController)
-router.get('/getCompanies',getCompanylistController)
+router.get('/getCompany',getCompanylistController)
 router.get('/getjobDetails/:jobId',getjobDetailsController)
+
 
 
 

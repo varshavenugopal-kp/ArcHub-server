@@ -14,6 +14,7 @@ import { companyModel } from "../../Infra/database/companyModel";
 import { companyRepositoryImpl } from "../../Infra/repositories/companyRepository";
 import mongoose from "mongoose";
 import { getjob } from "../../App/usecases/user/Getjob";
+import { getCompany } from "../../App/usecases/user/companyShow";
 // import jsonwebtoken from 'jsonwebtoken'
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
@@ -92,16 +93,7 @@ export const userLoginController=async(req:Request,res:Response)=>{
       }
  }
 
- export const getCompanyController=async(req:Request,res:Response)=>{
-    const cid=req.params.cid
-    console.log("id here?",cid);    
-    
-    try{
-      
-    }catch(error){
-        res.status(500).json({ message: "Internal server error" });
-      }
- }
+
 
  export const getjobController=async(req:Request,res:Response)=>{
     try{
@@ -126,9 +118,25 @@ export const userLoginController=async(req:Request,res:Response)=>{
       console.log(error);
       
     }
-  
-  
+ 
   }
+
+  export const getCompanyController=async(req:Request,res:Response)=>{
+    const cid=req.params.cid
+    console.log("id here?",cid);    
+    
+    try{
+      let id=new mongoose.Types.ObjectId(cid)
+      const companies=await getCompany(companyRepository)(id)
+      if(companies){
+          res.json({message:'Data found',companies})
+        }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+      }
+ }
+
+
   export const getjobDetailsController=async(req:Request,res:Response)=>{
     const jobId=req.params.jobId
     try{

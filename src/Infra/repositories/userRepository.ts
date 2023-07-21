@@ -18,7 +18,7 @@ export type UserRepository={
     showUser:()=>Promise<User[]>
     blockUser(id:string):Promise<User|void|updateResult>
     UnblockUser(id:string):Promise<User|void|updateResult>
-   
+    
  }
 
  export const UserRepositoryImpl=(userModel:MongoDbUser):UserRepository=>{
