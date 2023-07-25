@@ -21,6 +21,10 @@ import { getCategories } from "../../App/usecases/user/CategoryList";
 import { categoryModel } from "../../Infra/database/Category";
 import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
 import { addServices } from "../../App/usecases/Company/addService";
+import { getJobs } from "../../App/usecases/user/Joblist";
+import { getjob } from "../../App/usecases/user/Getjob";
+import { update } from "../../App/usecases/Company/EditJob";
+// import { updateJob } from "../../App/usecases/Company/EditJob";
 // import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
@@ -233,7 +237,7 @@ export const detailsController=async(req:Request,res:Response)=>{
     console.log("cmpid",cId);
     try{
         let cmpnyId=new mongoose.Types.ObjectId(cId)
-        const projects=await viewProjects(ProjectRepository)(cmpnyId)
+        const projects=await viewDetails(companyRepository)(cmpnyId)
         if(projects){
             console.log("projects",projects);
             res.status(201).json({ message: "successful", projects });
@@ -374,4 +378,55 @@ export const getServiceController=async(req:Request,res:Response)=>{
         res.status(500).json({ message: "Internal server error" });
            
     }
+}
+export const JobListController=async(req:Request,res:Response)=>{
+    try{
+        const jobs=await getJobs(JobRepository)()
+        if(jobs){
+            res.json({message:'Data found',jobs})
+          }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+      }
+}
+
+export const singleJobController=async(req:Request,res:Response)=>{
+    const jobId=req.params.jobId
+    try{
+      let id=new mongoose.Types.ObjectId(jobId)
+        const jobs=await getjob(JobRepository)(id)
+        if(jobs){
+            res.json({message:'Data found',jobs})
+          }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+      }
+}
+
+export const jobEditController=async(req:Request,res:Response)=>{
+   const{jobId,...data}=req.body
+   console.log("id aaaayaaa",jobId);
+//    console.log("this is req.body",title);
+       console.log("yeee",data);
+       
+   try{
+    // let jobid=new mongoose.Types.ObjectId
+    // const jobs=await updateJob(JobRepository)(jobId,data)
+    let jbId=new mongoose.Types.ObjectId(jobId)
+    const jobs=await update(JobRepository)(jbId,data)
+       console.log("jobs edited",jobs);
+       
+    //    if(services){
+    //     console.log("varsha");
+    //     res.status(201).json({ message: "successful", services });
+        
+        
+    }
+   catch(error){
+
+   }
+
+  
+   
+
 }

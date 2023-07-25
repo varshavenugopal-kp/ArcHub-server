@@ -35,6 +35,10 @@ const jobschema=new Schema<Jobs>({
     description:{
         type:String,
         required:true
+    },
+    bookmarks:{
+        type:Array,
+      
     }
 })
 export const jobModel:MongodbJob=mongoose.connection.model<Document<any,any,any>&Jobs>('job',jobschema)

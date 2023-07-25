@@ -15,6 +15,13 @@ import { companyRepositoryImpl } from "../../Infra/repositories/companyRepositor
 import mongoose from "mongoose";
 import { getjob } from "../../App/usecases/user/Getjob";
 import { getCompany } from "../../App/usecases/user/companyShow";
+import { getId } from "../../App/usecases/user/GetId";
+import { AppliedModel } from "../../Infra/database/AppliedModel";
+import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
+import { apply } from "../../App/usecases/user/Apply";
+import { addBookmark } from "../../App/usecases/user/AddBookmark";
+import { removeBookmark } from "../../App/usecases/user/removeBookmark";
+import { getSaved } from "../../App/usecases/user/getSaved";
 // import jsonwebtoken from 'jsonwebtoken'
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
@@ -23,10 +30,13 @@ const db=userModel;
 const catDb=categoryModel
 const jobDb=jobModel
 const cmpdb=companyModel
+const applydb=AppliedModel
+
 const userRepository = UserRepositoryImpl(db);
 const companyRepository=companyRepositoryImpl(cmpdb)
 const categoryRepository=CategoryRepositoryImpl(catDb)
 const jobRepository=JobRepositoryImpl(jobDb)
+const applyRepository=applyRepositoryImpl(applydb)
 
 export const userSignupController=async(req:Request,res:Response)=>{
    const {fname,lname,email,password}=req.body
@@ -149,3 +159,94 @@ export const userLoginController=async(req:Request,res:Response)=>{
         res.status(500).json({ message: "Internal server error" });
       }
  }
+
+ export const getIdController=async(req:Request,res:Response)=>{
+   const  jobId=req.params.jobId
+   console.log("is this jobId here?",jobId);
+   try{
+    let id=new mongoose.Types.ObjectId(jobId)
+      const jobs=await getId(jobRepository)(id)
+      if(jobs){
+          res.json({message:'Data found',id:jobs.cId})
+        }
+  }catch(error){
+      res.status(500).json({ message: "Internal server error" });
+    }
+ }
+ export const appliedController=async(req:Request,res:Response)=>{
+  console.log("pleaaase comee",req.body);
+  const {firstName,lastName,email,phone,qualification,experience,skills,jobid,cid,file}=req.body
+  console.log("lklklklkllklkllklkllklll",cid);
+  console.log("lklklklkllklkllklkllklll",jobid);
+  
+   try{
+    let cmpnyId=new mongoose.Types.ObjectId(cid)
+    const jobId=new mongoose.Types.ObjectId(jobid)
+    const details={
+       firstName:firstName,
+       lastName:lastName,
+       email:email,
+       phone:phone,
+       qualification:qualification,
+       experience:experience
+    }
+    const job=await apply(applyRepository)(cmpnyId,jobId,details,skills,file)
+    console.log("here is the jobs",job);
+    if(job){
+      res.status(201).json({ message: "successful", job });
+    }
+    
+   }
+   catch(error){
+    res.status(500).json({ message: "Internal server error" });
+   }
+ }
+ export const bookmarkController=async(req:Request,res:Response)=>{
+   const {jobId,uid}= req.body
+   console.log("blaablaa",jobId);
+   console.log("runnnn",uid);
+   
+   
+   try{
+    // let userId=new mongoose.Types.ObjectId(uId)
+    const jobid=new mongoose.Types.ObjectId(jobId)
+    const jobs=await addBookmark(jobRepository)(jobid,uid)
+    if(jobs){
+      res.json({message:'Data found',jobs})
+    }
+    }catch(error){
+      res.status(500).json({ message: "Internal server error" });
+    }
+   }
+
+   export const removeBookmarkController=async(req:Request,res:Response)=>{
+    const {jobId,uid}= req.body
+    console.log("blaablaa",jobId);
+    console.log("runnnn",uid);
+    
+    
+    try{
+     // let userId=new mongoose.Types.ObjectId(uId)
+     const jobid=new mongoose.Types.ObjectId(jobId)
+     const jobs=await removeBookmark(jobRepository)(jobid,uid)
+     if(jobs){
+       res.json({message:'Data found',jobs})
+     }
+     }catch(error){
+       res.status(500).json({ message: "Internal server error" });
+     }
+    }
+
+    export const getSavedController=async(req:Request,res:Response)=>{
+      const {jobId,uId}=req.body
+      try{
+        // let userId=new mongoose.Types.ObjectId(uId)
+     const jobid=new mongoose.Types.ObjectId(jobId)
+      const getJobs=await getSaved(jobRepository)(uId)
+      }catch(error){
+
+      }
+
+    }
+
+ 

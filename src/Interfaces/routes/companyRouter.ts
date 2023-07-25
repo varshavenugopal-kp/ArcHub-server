@@ -1,5 +1,9 @@
 import { Router } from "express";
-import {  EditAboutController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getServiceController, imageAddController, jobAddController, projectAddController, projectController, serviceController } from "../controllers/companyControllers";
+import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getServiceController, imageAddController, jobAddController,
+    
+    jobEditController,
+    
+    projectAddController, projectController, serviceController, singleJobController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
 import { companyAuth } from "../middlewares/companyAuth";
 import { adminAuth } from "../middlewares/adminAuth";
@@ -20,5 +24,8 @@ router.get('/detailsEdit/:cid',detailsEditController)
 router.get('/category-list',categoryController)
 router.post('/addServices',serviceController)
 router.get('/getServices/:cid',getServiceController)
+router.get('/jobList',JobListController)
+router.get('/singleJob/:jobId',singleJobController)
+router.post('/editJob',jobEditController)
 // router.post('/user-block',userBlockController)
 export default router;  

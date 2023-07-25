@@ -100,6 +100,8 @@ export type companyRepository={
 
     const viewDetails=async(cId:mongoos.Types.ObjectId):Promise<Company|null>=>{
         const details=await companyModel.findOne({_id:cId})
+        console.log("checkingggg",details);
+        
         return details
         
     }
