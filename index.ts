@@ -6,7 +6,7 @@ import userRouter from "./src/Interfaces/routes/userRoutes";
 import companyRouter from "./src/Interfaces/routes/companyRouter"
 import adminRouter from "./src/Interfaces/routes/adminRoutes"
 import connectToDatabase from "./src/Infra/database/dbConfig";
-
+import ChatRouter from './src/Interfaces/routes/ChatRouter'
 import { errorHandler } from "./src/Utils/errorHandler";
 import { companyAuth } from "./src/Interfaces/middlewares/companyAuth";
 import { adminAuth } from "./src/Interfaces/middlewares/adminAuth";
@@ -29,5 +29,6 @@ app.use(cors({
 app.use("/",userRouter)
 app.use("/user",companyRouter)
 app.use("/admin",adminRouter)
+app.use("/chat",ChatRouter)
 
 
