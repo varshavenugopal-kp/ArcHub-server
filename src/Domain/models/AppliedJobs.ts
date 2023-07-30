@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 export interface AppliedJobs{
     jobId?:mongoose.Types.ObjectId
     cId?:mongoose.Types.ObjectId
+    userId?:mongoose.Types.ObjectId
     details?:object
     skills?:string[]
     file?:string

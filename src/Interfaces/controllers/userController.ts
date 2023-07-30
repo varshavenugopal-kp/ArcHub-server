@@ -18,10 +18,12 @@ import { getCompany } from "../../App/usecases/user/companyShow";
 import { getId } from "../../App/usecases/user/GetId";
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
-import { apply } from "../../App/usecases/user/Apply";
+import { applied, apply } from "../../App/usecases/user/Apply";
 import { addBookmark } from "../../App/usecases/user/AddBookmark";
 import { removeBookmark } from "../../App/usecases/user/removeBookmark";
 import { getSaved } from "../../App/usecases/user/getSaved";
+import { getCompanies } from "../../App/usecases/user/getCategoryWise";
+
 // import jsonwebtoken from 'jsonwebtoken'
 const jsonwebtoken=require('jsonwebtoken')
 const JWT_SECRET="sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
@@ -175,12 +177,14 @@ export const userLoginController=async(req:Request,res:Response)=>{
  }
  export const appliedController=async(req:Request,res:Response)=>{
   console.log("pleaaase comee",req.body);
-  const {firstName,lastName,email,phone,qualification,experience,skills,jobid,cid,file}=req.body
+  const {firstName,lastName,email,phone,qualification,experience,skills,jobid,cid,file,userId}=req.body
   console.log("lklklklkllklkllklkllklll",cid);
   console.log("lklklklkllklkllklkllklll",jobid);
+  console.log("lklklklkllklkllklkllklll",userId);
   
    try{
     let cmpnyId=new mongoose.Types.ObjectId(cid)
+    const userid=new mongoose.Types.ObjectId(userId)
     const jobId=new mongoose.Types.ObjectId(jobid)
     const details={
        firstName:firstName,
@@ -190,7 +194,7 @@ export const userLoginController=async(req:Request,res:Response)=>{
        qualification:qualification,
        experience:experience
     }
-    const job=await apply(applyRepository)(cmpnyId,jobId,details,skills,file)
+    const job=await apply(applyRepository)(cmpnyId,jobId,userid,details,skills,file)
     console.log("here is the jobs",job);
     if(job){
       res.status(201).json({ message: "successful", job });
@@ -243,10 +247,46 @@ export const userLoginController=async(req:Request,res:Response)=>{
         // let userId=new mongoose.Types.ObjectId(uId)
      const jobid=new mongoose.Types.ObjectId(jobId)
       const getJobs=await getSaved(jobRepository)(uId)
+      if(getJobs){
+        res.json({message:'Data found',getJobs})
+      }
       }catch(error){
 
       }
 
+    }
+
+    // export const getAppliedController=async(req:Request,res:Response)=>{
+    //    const userid=req.params.userid
+    //    console.log('jjj',userid);
+    //    const userId=new mongoose.Types.ObjectId(userid)
+    //    const appliedJobs=await getApplied(applyRepository)(userId)
+    //    console.log("lalalaaa",appliedJobs);
+    //    if(appliedJobs){
+    //     res.json({message:'Data found',appliedJobs})
+    //    }
+       
+    // }
+
+    export const getAppliedController=async(req:Request,res:Response)=>{
+      const userid=req.params.userid
+     const userId=new mongoose.Types.ObjectId(userid)
+     const getApplied=await applied(applyRepository)(userId)
+     console.log(getApplied,"kkkk");
+     
+
+      
+
+    }
+
+    export const getcatWiseController=async(req:Request,res:Response)=>{
+      const {category}=req.body
+      const company=await getCompanies(companyRepository)(category)
+      console.log("gott",company);
+      if(company){
+        res.json({message:'Data found',company})
+      }
+      
     }
 
  

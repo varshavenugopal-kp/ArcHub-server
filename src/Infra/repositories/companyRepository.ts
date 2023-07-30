@@ -30,6 +30,7 @@ export type companyRepository={
     detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
     getCompany:(cid:mongoos.Types.ObjectId)=>Promise<Company|null>
     addServices:(services:Array<object>,cid:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
+    getCompanyList:(cattegory:string)=>Promise<Company[]>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -150,6 +151,18 @@ export type companyRepository={
         
         return createdServices
     }
+    const getCompanyList=async(category:string):Promise<Company[]>=>{
+        const companies=await companyModel.find({
+            services: {
+              $elemMatch: {
+                category: category
+              }
+            }
+          })
+        console.log("noo",companies);
+        
+        return companies
+    }
     return{
         create,
         loginCompany,
@@ -166,6 +179,7 @@ export type companyRepository={
        editAbout,
        detailsEdit,
        getCompany,
-       addServices
+       addServices,
+       getCompanyList
     }
  }

@@ -6,6 +6,8 @@ import mongoose, { ObjectId, UpdateWriteOpResult } from "mongoose";
 
 export type applyRepository={
  create:(applies:AppliedJobs)=>Promise<AppliedJobs|null>
+ 
+ getApplied:(userId:mongoos.Types.ObjectId)=>Promise<AppliedJobs[]>
 }
 
 export const applyRepositoryImpl=(AppliedModel:MongodbApplied):applyRepository=>{
@@ -14,8 +16,22 @@ export const applyRepositoryImpl=(AppliedModel:MongodbApplied):applyRepository=>
         return appliedJobs.toObject()
     }
     
-
+    const getApplied=async(userId:mongoos.Types.ObjectId):Promise<AppliedJobs[]>=>{
+      const jobs=await AppliedModel.aggregate([{$match:{userId:userId}},
+        {
+        $lookup:{from:'jobs',
+        localField:'jobId',
+        foreignField:'_id',
+        as:'appliedjobs'
+    }}])
+    return jobs
+    // const jobs=await AppliedModel.find({userId:userId})
+    //   console.log("fhghgh")
+    //   return jobs
+    }
     return{
-      create
+      create,
+      getApplied
+
     }
 }

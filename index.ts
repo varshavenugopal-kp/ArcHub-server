@@ -4,6 +4,7 @@ const cors=require('cors')
 const cookieParser=require('cookie-parser')
 import userRouter from "./src/Interfaces/routes/userRoutes";
 import companyRouter from "./src/Interfaces/routes/companyRouter"
+
 import adminRouter from "./src/Interfaces/routes/adminRoutes"
 import connectToDatabase from "./src/Infra/database/dbConfig";
 import ChatRouter from './src/Interfaces/routes/ChatRouter'
@@ -11,14 +12,29 @@ import messageRouter from './src/Interfaces/routes/messageRouter'
 import { errorHandler } from "./src/Utils/errorHandler";
 import { companyAuth } from "./src/Interfaces/middlewares/companyAuth";
 import { adminAuth } from "./src/Interfaces/middlewares/adminAuth";
+import { Socket } from 'socket.io'
 require('dotenv').config();
+
 const app=express()
-app.listen(3001,()=>{
+const server=app.listen(3001,()=>{
     console.log("connected");
+})
+const io=require('socket.io')(server , {
+    pingTimeout:60000,
+    cors:{
+        origin:'http://localhost:3000'
+        // origin:'http://10.4.3.148:3000'
+    },
+})
+
+io.on("connection",(socket:any)=>{
+console.log("connected to socket.io");
+
 })
 connectToDatabase()
 
 app.use(cookieParser())
+
 app.use(express.json())
 
 app.use(errorHandler);
@@ -31,6 +47,6 @@ app.use("/",userRouter)
 app.use("/user",companyRouter)
 app.use("/admin",adminRouter)
 app.use("/chat",ChatRouter)
-app.usse("/message",messageRouter)
+app.use("/message",messageRouter)
 
 

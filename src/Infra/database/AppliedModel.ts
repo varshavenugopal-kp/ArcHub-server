@@ -11,6 +11,10 @@ const AppliedSchema=new Schema<AppliedJobs>({
     type:mongoose.Types.ObjectId,
     required:true
   },
+  userId:{
+    type:mongoose.Types.ObjectId,
+    required:true
+  },
   skills:{
     type:Array,
     required:true

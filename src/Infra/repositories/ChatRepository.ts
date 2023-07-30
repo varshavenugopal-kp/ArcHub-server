@@ -14,11 +14,11 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
         const userid=new mongoose.Types.ObjectId(userId)
         const isChat=await ChatModel.find({
                   $and:[
-                     {user:userId,company:cmpId}
+                     {user:userId},{company:cmpId}
                   ]
-                 }).populate("user","-password").populate("company","-password").populate("latestMessage")
+                 })
             console.log("moyanthpranav",isChat);
-            if(isChat){
+            if(isChat.length>0){
                 return isChat
             }else{
                 const chatData:Chat={
@@ -29,6 +29,8 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
                 }
                 const createdChat=await ChatModel.create(chatData)
                 const fullChat=await ChatModel.findOne({_id:createdChat._id}).populate('user','-password').populate('company','-password')
+                console.log("chatttt",fullChat);
+                
                 return fullChat
     }}
     const getAllChats=async(userId:string,cmpId:string):Promise<Chat[] | null>=>{

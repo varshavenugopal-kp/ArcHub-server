@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { appliedController, bookmarkController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getSavedController, getjobController, getjobDetailsController, removeBookmarkController, userLoginController, userSignupController } from "../controllers/userController";
+import { appliedController, bookmarkController, getAppliedController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getSavedController, getcatWiseController, getjobController, getjobDetailsController, removeBookmarkController, userLoginController, userSignupController } from "../controllers/userController";
 const router = Router();
 
 router.post('/register',userSignupController);
@@ -14,6 +14,8 @@ router.post('/jobApplied',appliedController)
 router.post('/addBookmark',bookmarkController)
 router.post('/bookmarkRemove',removeBookmarkController)
 router.get('/getSavedjobs',getSavedController)
+router.get('/getAppliedJobs/:userid',getAppliedController)
+router.get('/getCategoryWise',getcatWiseController)
 
 
 
