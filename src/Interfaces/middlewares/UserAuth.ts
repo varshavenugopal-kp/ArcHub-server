@@ -8,10 +8,12 @@ interface Auth {
 }
 
 
-export const adminAuth = (req: Request, res: Response, next: NextFunction) => {
+export const userAuth = (req: Request, res: Response, next: NextFunction) => {
     try {
         let userToken = req.headers.userToken
         let JWT = process.env.JWT_SECRET as string
+        console.log("usertoken",userToken);
+        
 
         if (userToken) {
             userToken = userToken.toString()

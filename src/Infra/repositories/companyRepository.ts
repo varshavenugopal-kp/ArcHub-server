@@ -31,6 +31,7 @@ export type companyRepository={
     getCompany:(cid:mongoos.Types.ObjectId)=>Promise<Company|null>
     addServices:(services:Array<object>,cid:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
     getCompanyList:(cattegory:string)=>Promise<Company[]>
+    getProjects:(pname:string)=>Promise<Company[]|null>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -163,6 +164,12 @@ export type companyRepository={
         
         return companies
     }
+    const getProjects=async(pname:string):Promise<Company[]|null>=>{
+        const getproject=await companyModel.aggregate([{$unwind:"$projects"},{$match:{"projects.pname":pname}}])
+        console.log("varsha",getproject);
+        
+        return getproject
+      }
     return{
         create,
         loginCompany,
@@ -180,6 +187,7 @@ export type companyRepository={
        detailsEdit,
        getCompany,
        addServices,
-       getCompanyList
+       getCompanyList,
+       getProjects
     }
  }

@@ -12,8 +12,12 @@ export const companyAuth = (req: Request, res: Response, next: NextFunction) => 
     try {
        
         
-        let cmpToken = req.headers.cmpToken
+        let cmpToken = req.headers.cmptoken
         let JWT_SECRET = process.env.JWT_SECRET as string
+        console.log("token??",cmpToken);
+        console.log("ghgh",req.headers);
+        
+    
         
         
         if (cmpToken) {
@@ -24,11 +28,18 @@ export const companyAuth = (req: Request, res: Response, next: NextFunction) => 
             const isTokenExpired = decoded.exp < currentTimestamp;
             if (isTokenExpired) {
                 res.json({ message: 'expired' })
+                console.log("expired");
+                
             } else {
                 next()
+                console.log("next");
+                
             }
         } else {
             res.json({ message: 'unauthorized' })
+            console.log("unauthorized");
+            
+
         }
     }
     catch (err) {

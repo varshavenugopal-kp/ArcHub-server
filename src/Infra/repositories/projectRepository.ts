@@ -8,6 +8,7 @@ import { viewProjects } from "../../App/usecases/Company/ViewProjects";
 export type ProjectRepository={
    create:(projects:Projects)=>Promise<Projects|null>
    viewProjects:(cid:mongoos.Types.ObjectId)=>Promise<Projects|null>
+  
 }
 
 export const ProjectRepositoryImpl=(ProjectModel:MongodbProject):ProjectRepository=>{
@@ -26,10 +27,12 @@ export const ProjectRepositoryImpl=(ProjectModel:MongodbProject):ProjectReposito
       
       return projects
     }
+   
 
 return{
     create,
-    viewProjects
+    viewProjects,
+    
     
 }
 }

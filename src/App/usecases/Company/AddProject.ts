@@ -27,3 +27,10 @@ export const addProject=(companyRepository:companyRepository)=>async(cid:mongoos
     
     return createdProject
 }
+
+export const getProjectByName=(companyRepository:companyRepository)=>async(pname:string)=>{
+    const projectss=await companyRepository.getProjects(pname)
+    console.log("projectsssss",projectss);
+    return projectss?projectss:null
+    
+}

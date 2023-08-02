@@ -4,5 +4,7 @@ export interface User{
     email?:string,
     password?:string,
     status?:boolean
+    isGoogle?:boolean
+    image?:string
 }
 

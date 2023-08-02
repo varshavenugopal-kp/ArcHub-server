@@ -4,16 +4,16 @@ import { adminAuth } from "../middlewares/adminAuth";
 const router = Router();
 
 router.post('/login',adminLoginController)
-router.get('/user-list',showUserController)
-router.get('/company-list',showCompanyController)
-router.post('/user-block',userBlockController)
-router.post('/user-unblock',userUnblockController)
-router.post('/company-block',companyBlockController)
-router.post('/company-unblock',companyUnblockController)
-router.get('/requests',companyRequestsController)
-router.post('/accept-request',requestAcceptController)
-router.post('/accept-request',requestAcceptController)
-router.post('/categoryAdd',categoryAddController)
-router.get('/category-list',categoryController)
+router.get('/user-list',adminAuth,showUserController)
+router.get('/company-list',adminAuth,showCompanyController)
+router.post('/user-block',adminAuth,userBlockController)
+router.post('/user-unblock',adminAuth,userUnblockController)
+router.post('/company-block',adminAuth,companyBlockController)
+router.post('/company-unblock',adminAuth,companyUnblockController)
+router.get('/requests',adminAuth,companyRequestsController)
+router.post('/accept-request',adminAuth,requestAcceptController)
+router.post('/accept-request',adminAuth,requestAcceptController)
+router.post('/categoryAdd',adminAuth,categoryAddController)
+router.get('/category-list',adminAuth,categoryController)
 
 export default router

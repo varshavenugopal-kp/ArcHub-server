@@ -3,6 +3,8 @@ import { User } from '../../Domain/models/User';
 import { MongoDbUser, userModel } from '../database/userModel';
 import { showUser } from '../../App/usecases/admin/userManage';
 import { ObjectId } from 'mongodb';
+import { UpdateWriteOpResult } from "mongoose";
+import mongoos from "mongoose";
  
 
 interface updateResult{
@@ -18,7 +20,8 @@ export type UserRepository={
     showUser:()=>Promise<User[]>
     blockUser(id:string):Promise<User|void|updateResult>
     UnblockUser(id:string):Promise<User|void|updateResult>
-    
+    addImage(id:mongoos.Types.ObjectId,img:string):Promise<UpdateWriteOpResult>
+    getSingleUser(id:mongoos.Types.ObjectId):Promise<User|null>
  }
 
  export const UserRepositoryImpl=(userModel:MongoDbUser):UserRepository=>{
@@ -28,8 +31,13 @@ export type UserRepository={
     };
 
     const LoginUser=async (email:string):Promise<User|null>=>{
+      console.log("klklklk",email);
+      
       const userCheck=await userModel.findOne({email});
+      console.log("oooooooo",userCheck);
+      
       return userCheck?userCheck.toObject():null;
+
       
     };
     
@@ -49,13 +57,23 @@ export type UserRepository={
       const result=await userModel.updateOne({_id:new ObjectId(id)},{$set:{status:true}})
       return result
     }
+    const addImage=async(id:mongoos.Types.ObjectId,img:string):Promise<UpdateWriteOpResult>=>{
+      const result=await userModel.updateOne({ _id:id}, { $set: {image:img } })
+      return result
+    }
+     const getSingleUser=async(id:mongoos.Types.ObjectId):Promise<User|null>=>{
+      const usersData=await userModel.findOne({_id:id});
+      return usersData
+    }
 
     return{
       create,
       LoginUser,
       showUser,
       blockUser,
-      UnblockUser
+      UnblockUser,
+      addImage,
+      getSingleUser
     }
  }
 

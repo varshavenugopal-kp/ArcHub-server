@@ -25,6 +25,13 @@ const userSchema = new Schema<User>({
     type:Boolean,
     default:true,
     required:true
+   },
+   isGoogle:{
+      type:Boolean,
+      
+   },
+   image:{
+      type:String
    }
   });
 

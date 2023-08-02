@@ -23,6 +23,10 @@ import { addBookmark } from "../../App/usecases/user/AddBookmark";
 import { removeBookmark } from "../../App/usecases/user/removeBookmark";
 import { getSaved } from "../../App/usecases/user/getSaved";
 import { getCompanies } from "../../App/usecases/user/getCategoryWise";
+import { getProjectByName } from "../../App/usecases/Company/AddProject";
+import { updateImage } from "../../App/usecases/user/AddProfile";
+import { getUser } from "../../App/usecases/admin/userManage";
+// import { getProjectByName } from "../../App/usecases/Company/ViewProjects";
 
 // import jsonwebtoken from 'jsonwebtoken'
 const jsonwebtoken=require('jsonwebtoken')
@@ -41,13 +45,13 @@ const jobRepository=JobRepositoryImpl(jobDb)
 const applyRepository=applyRepositoryImpl(applydb)
 
 export const userSignupController=async(req:Request,res:Response)=>{
-   const {fname,lname,email,password}=req.body
-   console.log(req.body);
+   const {fname,lname,email,password,isGoogle}=req.body
+   console.log("hiii=",req.body);
    
-   console.log("helllo");
+  //  console.log("helllo");
    
    try{
-    const user=await signupUser(userRepository)(fname,lname,email,password);
+    const user=await signupUser(userRepository)(fname,lname,email,password,isGoogle);
     console.log("user",user);
     
     if(user){
@@ -59,15 +63,20 @@ export const userSignupController=async(req:Request,res:Response)=>{
     }
    
    }catch(error){
+    console.log('err=',error);
+    
     res.status(500).json({ message: "Internal server error" });
    }
 }
 
 export const userLoginController=async(req:Request,res:Response)=>{
     const {email,password}=req.body
-    console.log(req.body);
+    console.log("hii=",req.body);
+    console.log('jjj=',email);
+    console.log("nvnvvn",password);
     
-    console.log("helllo");
+    
+    // console.log("helllo");
     
     try{
      const user=await LoginUser(userRepository)(email,password);
@@ -90,6 +99,8 @@ export const userLoginController=async(req:Request,res:Response)=>{
      }
     
     }catch(error){
+      console.log('errrrr=',error);
+      
      res.status(500).json({ message: "Internal server error" });
     }
  }
@@ -289,4 +300,48 @@ export const userLoginController=async(req:Request,res:Response)=>{
       
     }
 
- 
+    export const getProjectController=async(req:Request,res:Response)=>{
+      const {id}=req.params
+      console.log("enthaaaavooo",id);
+      
+      const projects=await getProjectByName(companyRepository)(id)
+      console.log("gott",projects);
+      if(projects){
+        res.json({message:'Data found',projects:projects[0].projects})
+      }
+    }
+
+    export const profilePicController=async(req:Request,res:Response)=>{
+      const image=req.body
+      const userid=req.params.userid
+      console.log("heyy",image);
+      console.log("yooo",userid);
+      
+      
+      try{
+        let userId=new mongoose.Types.ObjectId(userid)
+        console.log("heyy",userid);
+      const imagee=await updateImage(userRepository)(userId,image)
+      if(imagee){
+        console.log("kjkjkjkj",imagee);
+        
+        res.status(201).json({ message: "successful", imagee });
+    
+    }
+  }catch(error){
+
+    }   
+    }
+
+   export const userInfoController=async(req:Request,res:Response)=>{
+     const id=req.params.userid
+     try{
+      let userId=new mongoose.Types.ObjectId(id)
+      let userData=await getUser(userRepository)(userId)
+      if(userData){
+        res.json({message:'Data found',profile:userData.image})
+      }
+     }catch(error){
+       
+     }
+   }
