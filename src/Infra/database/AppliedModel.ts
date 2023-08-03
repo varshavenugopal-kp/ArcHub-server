@@ -22,6 +22,9 @@ const AppliedSchema=new Schema<AppliedJobs>({
   details:{
     type:Object,
     required:true
+  },
+  file:{
+    type:String
   }
 })
 export const AppliedModel:MongodbApplied=mongoose.connection.model<Document<any,any,any>&AppliedJobs>('appliedJobs',AppliedSchema)

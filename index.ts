@@ -13,6 +13,7 @@ import { errorHandler } from "./src/Utils/errorHandler";
 import { companyAuth } from "./src/Interfaces/middlewares/companyAuth";
 import { adminAuth } from "./src/Interfaces/middlewares/adminAuth";
 import { Socket } from 'socket.io'
+import { newMessageRecieved } from "./src/Domain/models/Chat";
 require('dotenv').config();
 
 const app=express()
@@ -29,8 +30,44 @@ const io=require('socket.io')(server , {
 
 io.on("connection",(socket:any)=>{
 console.log("connected to socket.io");
-
+socket.on("setup", (userId:string) => {
+    socket.join(userId);``
+   //  console.log("usr joined room",userId);
+    socket.emit("connected");
+   })
+   socket.on("disconnect", ()=> {
+    console.log('user disconnected room');
+    
 })
+socket.on('join chat',(room:string)=>{
+    socket.join(room)
+    console.log("User Joined room : " + room);  
+})
+socket.on('new message',(newMessageReceived:newMessageRecieved)=>{
+    let chat = newMessageReceived.chat
+    console.log('new message=',newMessageReceived);
+    const sender=newMessageReceived.user ? newMessageReceived.user : newMessageReceived?.company
+    console.log('sender is',sender);
+    console.log('newMessageReceived.chat.user=',newMessageReceived.chat?.user);
+    
+ //    if(!chat.user && !chat?.company) return console.log("Chat.users not defiend");
+ if(sender===newMessageReceived.chat?.user._id){
+     console.log('user is the sender');
+     
+     socket.in(chat?.company._id).emit('message recieved',newMessageReceived)
+ }
+ if(sender===newMessageReceived.chat?.company._id){
+     console.log('company?.company is the sender');
+     socket.in(chat?.user._id).emit('message recieved',newMessageReceived)
+ }
+ 
+ })
+})
+
+
+
+
+
 connectToDatabase()
 
 app.use(cookieParser())

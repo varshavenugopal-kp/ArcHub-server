@@ -20,5 +20,9 @@ const ChatSchema=new Schema<Chat>({
         ref:'message'
     }
 
-})
+},
+{
+    timestamps:true
+}
+)
 export const ChatModel:MongodbChat=mongoose.connection.model<Document<any,any,any>&Chat>('chat',ChatSchema)

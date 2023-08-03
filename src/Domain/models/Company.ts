@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 export interface Company{
-    
+    _id?:string,
     cname?:string,
     location?:string,
     district?:string,

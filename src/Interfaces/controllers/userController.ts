@@ -2,7 +2,7 @@ import { Request,Response } from "express";
 import {userModel} from "../../Infra/database/userModel"
 import { UserRepositoryImpl } from "../../Infra/repositories/userRepository";
 import { signupUser } from "../../App/usecases/user/signupUse";
-import { LoginUser } from "../../App/usecases/user/LoginUseCase";
+import { CheckUser, LoginUser, passwordReset } from "../../App/usecases/user/LoginUseCase";
 import { categoryModel } from "../../Infra/database/Category";
 import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
 import { getCategories } from "../../App/usecases/user/CategoryList";
@@ -13,6 +13,7 @@ import { showCompany } from "../../App/usecases/admin/companyManage";
 import { companyModel } from "../../Infra/database/companyModel";
 import { companyRepositoryImpl } from "../../Infra/repositories/companyRepository";
 import mongoose from "mongoose";
+const otpSender = require('node-otp-sender');
 import { getjob } from "../../App/usecases/user/Getjob";
 import { getCompany } from "../../App/usecases/user/companyShow";
 import { getId } from "../../App/usecases/user/GetId";
@@ -223,9 +224,9 @@ export const userLoginController=async(req:Request,res:Response)=>{
    
    
    try{
-    // let userId=new mongoose.Types.ObjectId(uId)
+    let userId=new mongoose.Types.ObjectId(uid)
     const jobid=new mongoose.Types.ObjectId(jobId)
-    const jobs=await addBookmark(jobRepository)(jobid,uid)
+    const jobs=await addBookmark(jobRepository)(jobid,userId)
     if(jobs){
       res.json({message:'Data found',jobs})
     }
@@ -253,10 +254,10 @@ export const userLoginController=async(req:Request,res:Response)=>{
     }
 
     export const getSavedController=async(req:Request,res:Response)=>{
-      const {jobId,uId}=req.body
+      const uId=req.params.userid
       try{
         // let userId=new mongoose.Types.ObjectId(uId)
-     const jobid=new mongoose.Types.ObjectId(jobId)
+    //  const jobid=new mongoose.Types.ObjectId(jobId)
       const getJobs=await getSaved(jobRepository)(uId)
       if(getJobs){
         res.json({message:'Data found',getJobs})
@@ -280,10 +281,18 @@ export const userLoginController=async(req:Request,res:Response)=>{
     // }
 
     export const getAppliedController=async(req:Request,res:Response)=>{
+      console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+      
       const userid=req.params.userid
+      console.log("nnnnnnnnnnnnnn",userid);
+      
      const userId=new mongoose.Types.ObjectId(userid)
      const getApplied=await applied(applyRepository)(userId)
      console.log(getApplied,"kkkk");
+
+     if(getApplied){
+      res.json({message:'Data found',getApplied})
+    }
      
 
       
@@ -312,7 +321,9 @@ export const userLoginController=async(req:Request,res:Response)=>{
     }
 
     export const profilePicController=async(req:Request,res:Response)=>{
-      const image=req.body
+      console.log(req.body,"hhehhee");
+      
+      const image=req.body.files
       const userid=req.params.userid
       console.log("heyy",image);
       console.log("yooo",userid);
@@ -329,7 +340,8 @@ export const userLoginController=async(req:Request,res:Response)=>{
     
     }
   }catch(error){
-
+      console.log(error);
+      
     }   
     }
 
@@ -345,3 +357,57 @@ export const userLoginController=async(req:Request,res:Response)=>{
        
      }
    }
+
+   export const checkStudForOtp = async(req:Request,res:Response)=>{
+    try{
+        const email = req.body.email;
+        console.log('em=',email);
+        const emailCheck = await CheckUser(userRepository)(email);
+        if(emailCheck){
+            const senderEmail = `${process.env.REACT_APP_SENDER_EMAIL}`;
+            const senderPassword = `${process.env.REACT_APP_SENDER_PASSWORD}`;
+            const recipientEmail = email;
+            const subject = 'OTP Verification';
+            otpSender(senderEmail, senderPassword, recipientEmail, subject)
+                .then((response:any) => {
+                    console.log(response);
+                    res.status(201).json({message:'Email exist',emailExist:true,otp:response.otp}) 
+                })
+                .catch((error:any) => {
+                    console.error('Error:', error);
+                });
+
+            
+        }
+        else{
+            res.json({message:'Email doesnot exist!',emaiExist:false}) 
+        }
+        
+    }catch(error){
+        console.log("err=",error);
+        
+        res.status(500).json({ message: "Internal server error"});
+    } 
+}
+
+export const resestPassword = async(req:Request,res:Response)=>{
+  try{
+   const {email,password} = req.body;
+   console.log('email=',email);
+   console.log('password=',password);
+   const result = await passwordReset(userRepository)(email,password);
+   if(result){
+      res.status(201).json({message:'Password reset successfull',result}) 
+  }
+  else{
+      res.json({message:'Invalid datas'})
+  }
+  }catch(error){
+      console.log("err=",error);
+      
+      res.status(500).json({ message: "Internal server error"});
+  } 
+} 
+
+
+

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getServiceController, imageAddController, jobAddController,
+import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getAppliedsController, getServiceController, imageAddController, jobAddController,
     
     jobEditController,
     
@@ -7,6 +7,7 @@ import {  EditAboutController, JobListController, aboutAddController, categoryCo
 import { userBlockController } from "../controllers/adminController";
 import { companyAuth } from "../middlewares/companyAuth";
 import { adminAuth } from "../middlewares/adminAuth";
+import { getAppliedController } from "../controllers/userController";
 const router = Router();
 
 router.post('/register',companyRegisterController)
@@ -27,5 +28,6 @@ router.get('/getServices/:cid',companyAuth,getServiceController)
 router.get('/jobList',companyAuth,JobListController)
 router.get('/singleJob/:jobId',companyAuth,singleJobController)
 router.post('/editJob',companyAuth,jobEditController)
+router.get('/getApplications/:cid',getAppliedsController)
 // router.post('/user-block',userBlockController)
 export default router;  

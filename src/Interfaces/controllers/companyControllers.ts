@@ -24,6 +24,9 @@ import { addServices } from "../../App/usecases/Company/addService";
 import { getJobs } from "../../App/usecases/user/Joblist";
 import { getjob } from "../../App/usecases/user/Getjob";
 import { update } from "../../App/usecases/Company/EditJob";
+import { allapplied, applied } from "../../App/usecases/user/Apply";
+import { AppliedModel } from "../../Infra/database/AppliedModel";
+import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
 // import { updateJob } from "../../App/usecases/Company/EditJob";
 // import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
@@ -34,10 +37,12 @@ const db=companyModel;
 const jobdb=jobModel;
 const projectdb=ProjectModel
 const categorydb=categoryModel
+const applydb=AppliedModel
 const companyRepository=companyRepositoryImpl(db)
 const JobRepository=JobRepositoryImpl(jobdb)
 const ProjectRepository=ProjectRepositoryImpl(projectdb)
 const categoryRepository=CategoryRepositoryImpl(categorydb)
+const applyRepository=applyRepositoryImpl(applydb)
 export const companyRegisterController=async(req:Request,res:Response)=>{
     console.log(req.body)
     const {cname,location,district,state,email,password,file}=req.body
@@ -50,6 +55,8 @@ export const companyRegisterController=async(req:Request,res:Response)=>{
         }
            
     }catch(error){
+        console.log(error);
+        
         res.status(500).json({ message: "Internal server error" });
        }
     
@@ -429,4 +436,19 @@ export const jobEditController=async(req:Request,res:Response)=>{
   
    
 
+}
+
+export const getAppliedsController=async(req:Request,res:Response)=>{
+    console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+    
+    const cid=req.params.cid
+    console.log("nnnnnnnnnnnnnn",cid);
+    
+   const cId=new mongoose.Types.ObjectId(cid)
+   const getApplied=await allapplied(applyRepository)(cId)
+   console.log(getApplied,"kkkk");
+
+   if(getApplied){
+    res.json({message:'Data found',getApplied})
+  }
 }

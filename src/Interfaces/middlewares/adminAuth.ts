@@ -12,6 +12,7 @@ export const adminAuth = (req: Request, res: Response, next: NextFunction) => {
     try {
         let token = req.headers.token
         let JWT_SECRET = "sdfghjlkj345678()fgjhkjhyftr[];dfghjhdfhggddfghghfdf3456"
+        console.log("token????????",token);
 
         if (token) {
             token = token.toString()

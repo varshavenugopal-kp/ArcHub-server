@@ -14,8 +14,10 @@ export const companyAuth = (req: Request, res: Response, next: NextFunction) => 
         
         let cmpToken = req.headers.cmptoken
         let JWT_SECRET = process.env.JWT_SECRET as string
-        console.log("token??",cmpToken);
-        console.log("ghgh",req.headers);
+        console.log("Helloooooo");
+        
+        // console.log("token??",cmpToken);
+        // console.log("ghgh",req.headers);
         
     
         

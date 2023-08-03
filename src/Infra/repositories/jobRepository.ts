@@ -12,7 +12,7 @@ export type JobRepository={
     EditJob:(jbId:mongoos.Types.ObjectId,jobs:Jobs)=>Promise<UpdateWriteOpResult|null>
     getId:(jobId:mongoos.Types.ObjectId)=>Promise<Jobs|null>
     // update:(jobs:Jobs,jobId:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult|null>
-    bookmark:(jobId:mongoos.Types.ObjectId,uId:string)=>Promise<UpdateWriteOpResult|null>
+    bookmark:(jobId:mongoos.Types.ObjectId,uId:mongoose.Types.ObjectId)=>Promise<UpdateWriteOpResult|null>
     removebookmark:(jobId:mongoos.Types.ObjectId,uId:string)=>Promise<UpdateWriteOpResult|null>
     getSaved:(uId:string)=>Promise<Jobs[]>
 }
@@ -51,7 +51,7 @@ export const JobRepositoryImpl=(jobModel:MongodbJob):JobRepository=>{
         console.log("varsha",jobs);
         return jobs
     }
-    const bookmark=async(jobId:mongoos.Types.ObjectId,uId:string):Promise<UpdateWriteOpResult>=>{
+    const bookmark=async(jobId:mongoos.Types.ObjectId,uId:mongoose.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
         const bookmarkedJob=await jobModel.updateOne({_id:jobId},{$push:{bookmarks:uId}})
         console.log("good spirit pls come",bookmarkedJob);
         
@@ -68,6 +68,9 @@ export const JobRepositoryImpl=(jobModel:MongodbJob):JobRepository=>{
 
     
     const getSaved=async(uId:string):Promise<Jobs[]>=>{
+        console.log("uid:",uId);
+        
+        
         const jobs=await jobModel.aggregate([
             {
                 $match:{
