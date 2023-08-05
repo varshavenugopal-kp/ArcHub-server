@@ -7,3 +7,9 @@ export const viewDetails=(companyRepository:companyRepository)=>async(cId:mongoo
     console.log("details",details);
     return details?details:null
 }
+
+// export const getInfo=(companyRepository:companyRepository)=>async(cId:mongoos.Types.ObjectId)=>{
+//     const details = await companyRepository.getInfo(cId)
+//     console.log("details",details);
+//     return details?details:null
+// }

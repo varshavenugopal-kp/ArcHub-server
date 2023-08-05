@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { userAuth} from '../middlewares/UserAuth'
-import { appliedController, bookmarkController, checkStudForOtp, getAppliedController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getProjectController, getSavedController, getcatWiseController, getjobController, getjobDetailsController, profilePicController, removeBookmarkController, resestPassword, userInfoController, userLoginController, userSignupController } from "../controllers/userController";
+import { appliedController, bookmarkController, checkStudForOtp, getAppliedController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getProjectController, getSavedController, getcatWiseController, getjobController, getjobDetailsController, profilePicController, removeBookmarkController, resestPassword, updateController, userInfoController, userLoginController, userSignupController } from "../controllers/userController";
 const router = Router();
 
 router.post('/register',userSignupController);
@@ -22,6 +22,7 @@ router.post('/profilepic/:userid',profilePicController)
 router.get('/getUserInfo/:userid',userInfoController)
 router.post('/check-user',checkStudForOtp)
 router.post('/reset-password', resestPassword)
+router.post('/updateProfile/userid',updateController)
 
 // router.post('/resetPassword',resetPasswordController)
 

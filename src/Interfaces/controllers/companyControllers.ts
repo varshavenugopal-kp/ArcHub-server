@@ -14,7 +14,7 @@ import { addDetails } from "../../App/usecases/Company/addDetails";
 import { addAbout } from "../../App/usecases/Company/addAbout";
 import { viewDetails } from "../../App/usecases/Company/ViewDetails";
 import { viewProjects } from "../../App/usecases/Company/ViewProjects";
-import { addImage } from "../../App/usecases/Company/Addimage";
+import { addImage, addlogo } from "../../App/usecases/Company/Addimage";
 import { editAbout } from "../../App/usecases/Company/EditAbout";
 import { editDetails } from "../../App/usecases/Company/editDetails";
 import { getCategories } from "../../App/usecases/user/CategoryList";
@@ -27,6 +27,7 @@ import { update } from "../../App/usecases/Company/EditJob";
 import { allapplied, applied } from "../../App/usecases/user/Apply";
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
+import { getCompany } from "../../App/usecases/user/companyShow";
 // import { updateJob } from "../../App/usecases/Company/EditJob";
 // import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
@@ -279,6 +280,32 @@ export const detailsController=async(req:Request,res:Response)=>{
     }
    }
 
+
+   export const logoAddController=async(req:Request,res:Response)=>{
+    const url=req.body.logo
+    const cid=req.params.cid
+    console.log('url:',url);
+    console.log("iiidddsssloogoooo",cid);
+    console.log("microsoft",url);
+    
+    
+    try{
+        let cmpnyId=new mongoose.Types.ObjectId(cid)
+        let logo=await addlogo(companyRepository)(cmpnyId,url)
+        if(logo){
+            console.log("kjkjkjkj",logo);
+            
+            res.status(201).json({ message: "successful", logo });
+        
+        }
+    }
+    catch(error){
+        // res.status(500).json({ message: "Internal server error" });
+        console.log(error);
+        
+    }
+   }
+
    
 
    export const detailsEditController=async(req:Request,res:Response)=>{
@@ -450,5 +477,20 @@ export const getAppliedsController=async(req:Request,res:Response)=>{
 
    if(getApplied){
     res.json({message:'Data found',getApplied})
+  }
+}
+
+export const getInfoController=async(req:Request,res:Response)=>{
+    console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+    
+    const cid=req.params.cid
+    console.log("nnnnnnnnnnnnnn",cid);
+    
+   const cId=new mongoose.Types.ObjectId(cid)
+   const info=await getCompany(companyRepository)(cId)
+   console.log(info,"kkkk");
+
+   if(info){
+    res.json({message:'Data found',info})
   }
 }

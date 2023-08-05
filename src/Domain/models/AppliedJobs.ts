@@ -15,4 +15,5 @@ export interface details{
    phone:number
    qualification:string
    experience:string
+   date:Date
 }

@@ -27,6 +27,8 @@ import { getCompanies } from "../../App/usecases/user/getCategoryWise";
 import { getProjectByName } from "../../App/usecases/Company/AddProject";
 import { updateImage } from "../../App/usecases/user/AddProfile";
 import { getUser } from "../../App/usecases/admin/userManage";
+import { update } from "../../App/usecases/Company/EditJob";
+import { updateProfile } from "../../App/usecases/user/UpdateProfile";
 // import { getProjectByName } from "../../App/usecases/Company/ViewProjects";
 
 // import jsonwebtoken from 'jsonwebtoken'
@@ -189,7 +191,7 @@ export const userLoginController=async(req:Request,res:Response)=>{
  }
  export const appliedController=async(req:Request,res:Response)=>{
   console.log("pleaaase comee",req.body);
-  const {firstName,lastName,email,phone,qualification,experience,skills,jobid,cid,file,userId}=req.body
+  const {firstName,lastName,email,phone,qualification,experience,date,skills,jobid,cid,file,userId}=req.body
   console.log("lklklklkllklkllklkllklll",cid);
   console.log("lklklklkllklkllklkllklll",jobid);
   console.log("lklklklkllklkllklkllklll",userId);
@@ -204,7 +206,9 @@ export const userLoginController=async(req:Request,res:Response)=>{
        email:email,
        phone:phone,
        qualification:qualification,
-       experience:experience
+       experience:experience,
+       date:date
+      
     }
     const job=await apply(applyRepository)(cmpnyId,jobId,userid,details,skills,file)
     console.log("here is the jobs",job);
@@ -351,7 +355,7 @@ export const userLoginController=async(req:Request,res:Response)=>{
       let userId=new mongoose.Types.ObjectId(id)
       let userData=await getUser(userRepository)(userId)
       if(userData){
-        res.json({message:'Data found',profile:userData.image})
+        res.json({message:'Data found',userData})
       }
      }catch(error){
        
@@ -408,6 +412,15 @@ export const resestPassword = async(req:Request,res:Response)=>{
       res.status(500).json({ message: "Internal server error"});
   } 
 } 
+export const updateController=async(req:Request,res:Response)=>{
+  const uId=req.params.userid
+  const {fname,lname,email}=req.body
+  try{
+    const updatedData=await updateProfile(userRepository)(fname,lname,email,uId)
 
+  }catch(error){
+    
+  }
+}
 
 

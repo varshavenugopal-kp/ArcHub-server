@@ -46,11 +46,11 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
     // }
     const getAllUserChats = async(userId:string):Promise<Chat | Chat[] | null>=>{
         try{
-            const studid= new mongoose.Types.ObjectId(userId)
+            const userid= new mongoose.Types.ObjectId(userId)
           
             const chats=ChatModel.find(
                
-                    {user:userId}
+                    {user:userid}
                   
             ).populate("user","-password").populate("latestMessage").sort({updatedAt:-1});
              return chats
@@ -62,7 +62,7 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
     const getAllCmpChats = async(cId:string):Promise<Chat | Chat[] | null>=>{
         try{
             const cid= new mongoose.Types.ObjectId(cId)
-            // console.log('sid=',cId);
+            console.log('cid=',cId);
             
             // const cId= new mongoose.Types.ObjectId(cId)
             const chats=ChatModel.find(
@@ -70,6 +70,8 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
                     {company:cid}
                    
             ).populate("company","-password").populate("latestMessage").sort({updatedAt:-1});
+            // console.log("detailsss",chats);
+            
              return chats
         }catch (error) {
             console.error('Error:', error);  

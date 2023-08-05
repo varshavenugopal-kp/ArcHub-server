@@ -59,7 +59,10 @@ export const JobRepositoryImpl=(jobModel:MongodbJob):JobRepository=>{
     }
 
     const removebookmark=async(jobId:mongoos.Types.ObjectId,uId:string):Promise<UpdateWriteOpResult>=>{
-        const removebookmarkedJob=await jobModel.updateOne({_id:jobId},{$pull:{bookmarks:uId}})
+       console.log(jobId);
+       
+       
+        const removebookmarkedJob=await jobModel.updateOne({_id:jobId},{$pull:{bookmarks:new mongoose.Types.ObjectId(uId)}})
         console.log("good spirit pls come",removebookmarkedJob);
         
         return removebookmarkedJob

@@ -24,7 +24,9 @@ export type companyRepository={
     projectAdd:(projects:Array<object>,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
     aboutAdd:(cId:mongoos.Types.ObjectId,description:string)=>Promise<UpdateWriteOpResult>
     viewDetails:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
+    // getInfo:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
     addImage:(cid:mongoos.Types.ObjectId,image:string)=>Promise<UpdateWriteOpResult>
+    addlogo:(cid:mongoos.Types.ObjectId,image:string)=>Promise<UpdateWriteOpResult>
     editAbout:(cid:mongoos.Types.ObjectId,data:string)=>Promise<UpdateWriteOpResult>
     // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
     detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
@@ -123,6 +125,17 @@ export type companyRepository={
         
         
     }
+    const addlogo=async(cid:mongoos.Types.ObjectId,image:string):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",image);
+        console.log("ooo",cid);
+        
+        
+        const createdImage=await companyModel.updateOne({ _id:cid}, { $set: {logo:image } })
+        console.log(createdImage);
+        return createdImage
+        
+        
+    }
 
     const editAbout=async(cid:mongoos.Types.ObjectId,data:string):Promise<UpdateWriteOpResult>=>{
         console.log("ssss",data);
@@ -183,6 +196,7 @@ export type companyRepository={
        aboutAdd,
        viewDetails,
        addImage,
+       addlogo,
        editAbout,
        detailsEdit,
        getCompany,

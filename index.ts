@@ -35,10 +35,10 @@ socket.on("setup", (userId:string) => {
    //  console.log("usr joined room",userId);
     socket.emit("connected");
    })
-   socket.on("disconnect", ()=> {
-    console.log('user disconnected room');
+//    socket.on("disconnect", ()=> {
+//     console.log('user disconnected room');
     
-})
+// })
 socket.on('join chat',(room:string)=>{
     socket.join(room)
     console.log("User Joined room : " + room);  
@@ -51,16 +51,21 @@ socket.on('new message',(newMessageReceived:newMessageRecieved)=>{
     console.log('newMessageReceived.chat.user=',newMessageReceived.chat?.user);
     
  //    if(!chat.user && !chat?.company) return console.log("Chat.users not defiend");
- if(sender===newMessageReceived.chat?.user._id){
+ if(sender?._id===newMessageReceived.chat?.user._id){
      console.log('user is the sender');
      
      socket.in(chat?.company._id).emit('message recieved',newMessageReceived)
  }
- if(sender===newMessageReceived.chat?.company._id){
+ if(sender?._id===newMessageReceived.chat?.company._id){
      console.log('company?.company is the sender');
      socket.in(chat?.user._id).emit('message recieved',newMessageReceived)
  }
+
+ if(chat?._id===newMessageReceived.user?._id) return 
+ socket.in(chat?.user._id).emit('message recieved',newMessageReceived);
  
+ if(chat?._id===newMessageReceived.company?._id) return
+ socket.in(chat?.company._id).emit('message recieved',newMessageReceived)
  })
 })
 

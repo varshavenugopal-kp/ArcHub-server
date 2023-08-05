@@ -23,6 +23,7 @@ export type UserRepository={
     addProImage(id:mongoos.Types.ObjectId,img:string):Promise<UpdateWriteOpResult>
     getSingleUser(id:mongoos.Types.ObjectId):Promise<User|null>
     resetPassword(email:string,password:string): Promise< UpdateWriteOpResult >;
+    update(fname:string,lname:string,email:string,uId:string):Promise< UpdateWriteOpResult >;
  }
 
  export const UserRepositoryImpl=(userModel:MongoDbUser):UserRepository=>{
@@ -78,6 +79,15 @@ export type UserRepository={
         } 
         return result
   }
+  const update = async(fname:string,lname:string,email:string,uId:string): Promise<UpdateWriteOpResult >=>{
+    const userId=new mongoos.Types.ObjectId(uId)
+    const result = await userModel.updateOne({_id:userId},{$set:{fname:fname,lname:lname,email:email}});
+    if(result.modifiedCount>0){
+        console.log('successful');
+        return result
+      } 
+      return result
+}
 
     return{
       create,
@@ -87,7 +97,8 @@ export type UserRepository={
       UnblockUser,
       addProImage,
       getSingleUser,
-      resetPassword
+      resetPassword,
+      update
     }
  }
 

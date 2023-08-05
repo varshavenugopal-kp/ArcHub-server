@@ -58,6 +58,9 @@ const companySchema= new Schema<Company>({
     image:{
         type:String,
         
+    },
+    logo:{
+        type:String
     }
     
 

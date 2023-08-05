@@ -12,7 +12,7 @@ export type MessageRepository={
 export const MessageRepositoryImpl=(MsgModel:MongodbMessage):MessageRepository=>{
     const sendMsg = async(content:string,chatId:string,user:string):Promise<Message>=>{
         const newChat:Message={
-            company: new mongoose.Types.ObjectId(user),
+            user: new mongoose.Types.ObjectId(user),  
             // user:new mongoose.Types.ObjectId(tutId),
             content,
             chat: new mongoose.Types.ObjectId(chatId),
@@ -20,10 +20,10 @@ export const MessageRepositoryImpl=(MsgModel:MongodbMessage):MessageRepository=>
         }
         let message=await MsgModel.create(newChat)
         message =await message.populate("user",'_id firstname lastname username profileImg')   
-        message =await message.populate("user",'_id firstname lastname username profileImg')   
+        message =await message.populate("company",'_id firstname lastname username profileImg')   
         message=await message.populate('chat')
         message=await message.populate('chat.user')
-        message=await message.populate('chat.user')
+        message=await message.populate('chat.company')
 
         await ChatModel.updateOne({_id:new mongoose.Types.ObjectId(chatId)},{$set:{latestMessage:message}})
 

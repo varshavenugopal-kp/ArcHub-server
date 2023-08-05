@@ -29,7 +29,8 @@ export const accessChatController=async(req:Request,res:Response)=>{
 
 }
 export const fetchUserChatController=async(req:Request,res:Response)=>{
-    const userId:string=req.params.userId
+    const userId:string=req.params.userid
+   console.log("aaavo",userId);
    
     try{
 const allChats=await getChats(ChatRepository)(userId)
@@ -45,9 +46,13 @@ res.status(202).json({chats:allChats})
 
 export const fetchCompanyChatController = async(req:Request,res:Response)=>{
     try{
-      const cId = req.params.cId;
+        console.log("here????",req.body);
+        
+      const cId = req.params.cid;
+      console.log(cId);
+      
       const allChats = await getCompanyChats(ChatRepository)(cId);
-      // console.log(allChats);
+      console.log(allChats);
       res.json({message:'chat fetch success',allChats})
     }catch (error) {
           
@@ -74,13 +79,13 @@ export const sendMessage=async(req:Request,res:Response)=>{
         if(currentRole === 'user'){
             const user = currentUserId;
             const msg=await sendingMessage(messageRepository)(content,chatId,user)
-            // console.log('msgg=',msg); 
+            console.log('msgg=',msg); 
             res.json({message:'success',msg})
           }
           else{
             const company = currentUserId;
             const msg=await cmpSendingMessage(messageRepository)(content,chatId,company)
-            // console.log('msgg=',msg); 
+            console.log('msgg=',msg); 
             res.json({message:'success',msg})
           }
 
@@ -94,8 +99,10 @@ export const sendMessage=async(req:Request,res:Response)=>{
 export const getMessagesByChatId=async(req:Request,res:Response)=>{
     // const userId:string=req.params.userId
     // const cId:string=req.params.cId
-    const chatId=req.body.chatId
-    console.log(req.body);
+    const chatId=req.params.chatId
+    console.log("real time pls",req.body);
+    console.log("check chatId",chatId);
+    
     
     try{
        
