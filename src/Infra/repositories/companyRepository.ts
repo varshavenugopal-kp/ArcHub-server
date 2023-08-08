@@ -15,7 +15,9 @@ interface updateResult{
 export type companyRepository={
     create:(company:Company)=>Promise<Company|null>;
     loginCompany:(email:string)=>Promise<Company|null>
-    showCompany:()=>Promise<Company[]>
+    showCompany:(page:number)=>Promise<Company[]>
+    showCompanies:()=>Promise<Company[]>
+    cmpCount:()=>Promise<number[]>
     blockCompany(id:string):Promise<Company|void|updateResult>
     unblockCompany(id:string):Promise<Company|void|updateResult>
     showRequests:()=>Promise<Company[]>
@@ -53,8 +55,36 @@ export type companyRepository={
         return companyCheck?companyCheck.toObject():null;
 
     };
+    const cmpCount=async():Promise<number[]>=>{
+        let Count=await companyModel.countDocuments({status:true})
+        const limit=6
+        let skip=0
+        const page=Count/limit
+        console.log(page,"counts");
+        
+        let cmpCount=Math.ceil(page)
+        console.log(cmpCount,"__________________________________________________");
+        let pagecount:number[] = []
+        for(let i=1;i<=cmpCount;i++){ 
+            pagecount.push(i)
+        }
+        console.log("pageCount",pagecount);
+        
+        return pagecount
+    }
 
-    const showCompany=async():Promise<Company[]>=>{
+    const showCompany=async(page:number):Promise<Company[]>=>{
+        const limit=4
+        let skip=0
+       
+        skip=(page-1)*limit;
+        const companyData=await companyModel.find({regStatus:true}).limit(limit).skip(skip)
+        console.log("companyData",companyData);
+        return companyData.map((company)=>company.toObject())
+        
+    }
+    const showCompanies=async():Promise<Company[]>=>{
+      
         const companyData=await companyModel.find({regStatus:true})
         console.log("companyData",companyData);
         return companyData.map((company)=>company.toObject())
@@ -187,7 +217,9 @@ export type companyRepository={
         create,
         loginCompany,
         showCompany,
+        showCompanies,
         blockCompany,
+        cmpCount,
         unblockCompany,
         showRequests,
         requestAccept,

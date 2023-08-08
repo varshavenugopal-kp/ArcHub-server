@@ -1,4 +1,4 @@
-import { Request,Response } from "express";
+import { Request,Response, query } from "express";
 import {userModel} from "../../Infra/database/userModel"
 import { UserRepositoryImpl } from "../../Infra/repositories/userRepository";
 import { signupUser } from "../../App/usecases/user/signupUse";
@@ -9,7 +9,7 @@ import { getCategories } from "../../App/usecases/user/CategoryList";
 import { jobModel } from "../../Infra/database/jobModel";
 import { JobRepositoryImpl } from "../../Infra/repositories/jobRepository";
 import { getJobs } from "../../App/usecases/user/Joblist";
-import { showCompany } from "../../App/usecases/admin/companyManage";
+import { cmpCount, showCompany } from "../../App/usecases/admin/companyManage";
 import { companyModel } from "../../Infra/database/companyModel";
 import { companyRepositoryImpl } from "../../Infra/repositories/companyRepository";
 import mongoose from "mongoose";
@@ -134,10 +134,20 @@ export const userLoginController=async(req:Request,res:Response)=>{
 
  export const getCompanylistController=async(req:Request,res:Response)=>{
     try{
-      const companyData=await showCompany(companyRepository)();
+      const page=req.query.page as string
+      console.log("therse areeee....",page);
+      
+      const pageNo = parseInt(page)
+      
+      console.log("here areeeee.......",pageNo);
+      
+      const companyData=await showCompany(companyRepository)(pageNo);
+      const pages=await cmpCount(companyRepository)()
+      console.log("pages",pages);
+      
       console.log("haai varsha",companyData);
       if(companyData){
-          res.json({message:'Data found',companyData})
+          res.json({message:'Data found',companyData,pages})
       }
     }
     catch(error){
@@ -413,11 +423,13 @@ export const resestPassword = async(req:Request,res:Response)=>{
   } 
 } 
 export const updateController=async(req:Request,res:Response)=>{
-  const uId=req.params.userid
-  const {fname,lname,email}=req.body
+  const userid=req.params.userid
+  const {fname,lname,email,image}=req.body
+  console.log(req.body);
+  
   try{
-    const updatedData=await updateProfile(userRepository)(fname,lname,email,uId)
-
+    const updatedData=await updateProfile(userRepository)(fname,lname,email,image,userid)
+    res.status(201).json({message:'successfull',updatedData}) 
   }catch(error){
     
   }

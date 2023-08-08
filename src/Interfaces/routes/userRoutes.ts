@@ -22,7 +22,7 @@ router.post('/profilepic/:userid',profilePicController)
 router.get('/getUserInfo/:userid',userInfoController)
 router.post('/check-user',checkStudForOtp)
 router.post('/reset-password', resestPassword)
-router.post('/updateProfile/userid',updateController)
+router.post('/updateProfile/:userid',updateController)
 
 // router.post('/resetPassword',resetPasswordController)
 

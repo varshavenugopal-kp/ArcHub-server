@@ -25,6 +25,10 @@ const AppliedSchema=new Schema<AppliedJobs>({
   },
   file:{
     type:String
+  },
+  status:{
+    type:Boolean,
+    default:true
   }
 })
 export const AppliedModel:MongodbApplied=mongoose.connection.model<Document<any,any,any>&AppliedJobs>('appliedJobs',AppliedSchema)

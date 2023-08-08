@@ -10,6 +10,7 @@ import { addProject } from "../../App/usecases/Company/AddProject";
 import { ProjectModel } from "../../Infra/database/projectModel";
 import { ProjectRepositoryImpl } from "../../Infra/repositories/projectRepository";
 import mongoose from "mongoose";
+const nodemailer = require('nodemailer');
 import { addDetails } from "../../App/usecases/Company/addDetails";
 import { addAbout } from "../../App/usecases/Company/addAbout";
 import { viewDetails } from "../../App/usecases/Company/ViewDetails";
@@ -21,10 +22,10 @@ import { getCategories } from "../../App/usecases/user/CategoryList";
 import { categoryModel } from "../../Infra/database/Category";
 import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
 import { addServices } from "../../App/usecases/Company/addService";
-import { getJobs } from "../../App/usecases/user/Joblist";
+import { getJobs, jobList } from "../../App/usecases/user/Joblist";
 import { getjob } from "../../App/usecases/user/Getjob";
 import { update } from "../../App/usecases/Company/EditJob";
-import { allapplied, applied } from "../../App/usecases/user/Apply";
+import { allapplied, allappliedDetails, applied } from "../../App/usecases/user/Apply";
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
 import { getCompany } from "../../App/usecases/user/companyShow";
@@ -423,6 +424,19 @@ export const JobListController=async(req:Request,res:Response)=>{
         res.status(500).json({ message: "Internal server error" });
       }
 }
+export const listJobController=async(req:Request,res:Response)=>{
+    const cid=req.params.cid
+    const cId=new mongoose.Types.ObjectId
+    try{
+        const jobs=await jobList(JobRepository)(cId)
+        if(jobs){
+            res.json({message:'Data found',jobs})
+          }
+    }catch(error){
+        res.status(500).json({ message: "Internal server error" });
+      }
+}
+
 
 export const singleJobController=async(req:Request,res:Response)=>{
     const jobId=req.params.jobId
@@ -480,6 +494,24 @@ export const getAppliedsController=async(req:Request,res:Response)=>{
   }
 }
 
+export const getAppliedDetailsController=async(req:Request,res:Response)=>{
+    console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+    
+    const cid=req.params.cid
+    const userId=req.query.userId as string
+    console.log("nnnnnnnnnnnnnnIdddddddddd",userId);
+    
+   const cId=new mongoose.Types.ObjectId(cid)
+   const uId=new mongoose.Types.ObjectId(userId)
+   const getApplied=await allappliedDetails(applyRepository)(cId,uId)
+   console.log(getApplied,"kkkk");
+
+   if(getApplied){
+    res.json({message:'Data found',getApplied})
+  }
+}
+
+
 export const getInfoController=async(req:Request,res:Response)=>{
     console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
     
@@ -494,3 +526,57 @@ export const getInfoController=async(req:Request,res:Response)=>{
     res.json({message:'Data found',info})
   }
 }
+
+export const getcompanyDashboard=async(req:Request,res:Response)=>{
+    const cid=req.params.cid
+    const cId=new mongoose.Types.ObjectId(cid)
+    try{
+      const projects=await viewDetails(companyRepository)(cId)
+      const projectCount=projects?.projects?.length
+      console.log("project",projectCount);
+      const services=await viewDetails(companyRepository)(cId)
+      const servicesCount=services?.services?.length
+      console.log("service",servicesCount);
+      const applications=await allapplied(applyRepository)(cId)
+      const applicationCount=applications?.length
+      console.log("applied",applicationCount);
+      const allJobs=await jobList(JobRepository)(cId)
+      const jobCount=allJobs?.length
+      console.log("jobs",jobCount);
+      console.log();
+      
+      res.json({message:'Data found',projectCount,servicesCount,applicationCount,jobCount})
+
+    }catch(error){
+
+    }
+}
+
+export const sendEmail=async(req:Request,res:Response)=>{
+    const { email, companyemail } = req.body;
+    try {
+        // Configure Nodemailer with your email service credentials
+        const transporter = nodemailer.createTransport({
+          service: 'gmail', // Replace with your email service provider (e.g., Gmail, Outlook, etc.)
+          auth: {
+            user: 'decorafurniture61@gmail.com', // Replace with your email address
+            pass: process.env.EMAIL_PASSWORD, // Replace with your email password or an app-specific password
+          },
+        });
+    
+        // Send the email
+        const info = await transporter.sendMail({
+          from: 'decorafurniture61@gmail.com', // Use the sender's email as the "from" address
+          to: 'varshavenugopal642@gmail.com',
+          subject: 'Congratulations! You have Been Shortlisted for this position ',
+          text: 'We hope this email finds you well. We are pleased to inform you that you have been shortlisted for the position. Your application and qualifications have impressed our hiring team, and we would like to invite you to the next stage of the selection process.', // You can customize the email content here
+        });
+    
+        console.log('Email sent:', info);
+        
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ success: false, error: 'Error sending email' });
+      }
+    };

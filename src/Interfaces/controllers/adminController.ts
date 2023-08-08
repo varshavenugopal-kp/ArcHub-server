@@ -7,7 +7,7 @@ import { userModel } from "../../Infra/database/userModel";
 import { showUser } from "../../App/usecases/admin/userManage";
 import { companyModel } from "../../Infra/database/companyModel";
 import { companyRepositoryImpl } from "../../Infra/repositories/companyRepository";
-import { showCompany } from "../../App/usecases/admin/companyManage";
+import { showCompanies, showCompany } from "../../App/usecases/admin/companyManage";
 import { blockuser } from "../../App/usecases/admin/userBlock";
 import { Unblockuser } from "../../App/usecases/admin/userUnblock";
 import { blockCompany } from "../../App/usecases/admin/companyBlock";
@@ -72,7 +72,7 @@ export const showUserController=async(req:Request,res:Response)=>{
 
 export const showCompanyController=async(req:Request,res:Response)=>{
   try{
-    const companyData=await showCompany(companyRepository)();
+    const companyData=await showCompanies(companyRepository)();
     console.log("haai varsha",companyData);
     if(companyData){
         res.json({message:'Data found',companyData})
@@ -192,5 +192,26 @@ export const categoryController=async(req:Request,res:Response)=>{
     }
   }catch(error){
     res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export const dashboardController=async(req:Request,res:Response)=>{
+  try{
+    const users=await showUser(userRepository)()
+    const userCount=users?.length
+    console.log("userCount",userCount);
+    const companies=await showCompanies(companyRepository)()
+    const companyCount=companies?.length
+    console.log("company",companyCount);
+    const categories=await categoryList(categoryRepository)()
+    const categoryCount=categories?.length
+    console.log("categoryCount",categoryCount);
+    const blocked=companies?.filter((obj)=>obj.status===false)
+    const blockedCount=blocked?.length
+    console.log("blockedCount",blockedCount);
+    res.json({message:"successfull",userCount,companyCount,categoryCount,blockedCount})
+    
+  }catch(error){
+
   }
 }

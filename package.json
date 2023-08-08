@@ -25,6 +25,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.0",
     "node-otp-sender": "^1.0.3",
+    "node-request-log": "^1.0.9",
+    "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22",
     "socket.io": "^4.7.1",
     "ts-node-dev": "^2.0.0"

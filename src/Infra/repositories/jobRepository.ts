@@ -8,6 +8,7 @@ import mongoos from "mongoose";
 export type JobRepository={
     create:(jobs:Jobs)=>Promise<Jobs|null>
     getJobs:()=>Promise<Jobs[]>
+    jobList:(cid:mongoos.Types.ObjectId)=>Promise<Jobs[]>
     getJob:(cid:mongoos.Types.ObjectId)=>Promise<Jobs[]|null>
     EditJob:(jbId:mongoos.Types.ObjectId,jobs:Jobs)=>Promise<UpdateWriteOpResult|null>
     getId:(jobId:mongoos.Types.ObjectId)=>Promise<Jobs|null>
@@ -25,6 +26,12 @@ export const JobRepositoryImpl=(jobModel:MongodbJob):JobRepository=>{
     }
     const getJobs=async():Promise<Jobs[]>=>{
         const jobs=await jobModel.aggregate([{$lookup:{from:"companies",localField:"cId",foreignField:"_id",as:"cmpInfo"}}])
+        console.log(jobs,"moynt");
+        
+        return jobs
+    }
+    const jobList=async(cid:mongoos.Types.ObjectId):Promise<Jobs[]>=>{
+        const jobs=await jobModel.aggregate([{$match:{cId:cid}},{$lookup:{from:"companies",localField:"cId",foreignField:"_id",as:"cmpInfo"}}])
         console.log(jobs,"moynt");
         
         return jobs
@@ -93,6 +100,7 @@ export const JobRepositoryImpl=(jobModel:MongodbJob):JobRepository=>{
 return{
     create,
     getJobs,
+    jobList,
     getJob,
     EditJob,
     getId,

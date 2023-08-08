@@ -29,3 +29,8 @@ export const allapplied=(applyRepository:applyRepository)=>async(cid:mongoose.Ty
     const applied=await applyRepository.getAllApplied(cid)
     return applied?applied:null
 }
+
+export const allappliedDetails=(applyRepository:applyRepository)=>async(cid:mongoose.Types.ObjectId,uId:mongoose.Types.ObjectId)=>{
+    const applied=await applyRepository.getAllAppliedDetails(cid,uId)
+    return applied?applied:null
+}

@@ -23,7 +23,7 @@ export type UserRepository={
     addProImage(id:mongoos.Types.ObjectId,img:string):Promise<UpdateWriteOpResult>
     getSingleUser(id:mongoos.Types.ObjectId):Promise<User|null>
     resetPassword(email:string,password:string): Promise< UpdateWriteOpResult >;
-    update(fname:string,lname:string,email:string,uId:string):Promise< UpdateWriteOpResult >;
+    update(fname:string,lname:string,email:string,image:string,uId:string):Promise< UpdateWriteOpResult >;
  }
 
  export const UserRepositoryImpl=(userModel:MongoDbUser):UserRepository=>{
@@ -68,8 +68,9 @@ export type UserRepository={
       return result
     }
      const getSingleUser=async(id:mongoos.Types.ObjectId):Promise<User|null>=>{
-      const usersData=await userModel.findOne({_id:id});
-      return usersData
+      const userData=await userModel.findOne({_id:id});
+      const {password,_id,status, ...data} = userData?.toObject() as User;
+      return data;
     }
     const resetPassword = async(email:string,password:string): Promise<UpdateWriteOpResult >=>{
       const result = await userModel.updateOne({email:email},{$set:{password:password}});
@@ -79,11 +80,12 @@ export type UserRepository={
         } 
         return result
   }
-  const update = async(fname:string,lname:string,email:string,uId:string): Promise<UpdateWriteOpResult >=>{
-    const userId=new mongoos.Types.ObjectId(uId)
-    const result = await userModel.updateOne({_id:userId},{$set:{fname:fname,lname:lname,email:email}});
+  const update = async(fname:string,lname:string,email:string,image:string,uId:string): Promise<UpdateWriteOpResult >=>{
+    const userId=new mongoos.Types.ObjectId(uId);
+    const result = await userModel.updateOne({_id:userId},{$set:{fname:fname,lname:lname,email:email,}});
     if(result.modifiedCount>0){
         console.log('successful');
+        
         return result
       } 
       return result

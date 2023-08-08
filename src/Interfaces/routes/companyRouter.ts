@@ -1,11 +1,13 @@
 import { Router } from "express";
-import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getAppliedsController, getInfoController, getServiceController, imageAddController, jobAddController,
+import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getAppliedDetailsController, getAppliedsController, getInfoController, getServiceController, getcompanyDashboard, imageAddController, jobAddController,
     
     jobEditController,
     
+    listJobController,
+    
     logoAddController,
     
-    projectAddController, projectController, serviceController, singleJobController } from "../controllers/companyControllers";
+    projectAddController, projectController, sendEmail, serviceController, singleJobController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
 import { companyAuth } from "../middlewares/companyAuth";
 import { adminAuth } from "../middlewares/adminAuth";
@@ -29,9 +31,14 @@ router.get('/category-list',companyAuth,categoryController)
 router.post('/addServices',companyAuth,serviceController)
 router.get('/getServices/:cid',companyAuth,getServiceController)
 router.get('/jobList',companyAuth,JobListController)
+router.get('/listJob/:cid',companyAuth,listJobController)
 router.get('/singleJob/:jobId',companyAuth,singleJobController)
 router.post('/editJob',companyAuth,jobEditController)
 router.get('/getApplications/:cid',getAppliedsController)
 router.get('/getCompanyInfo/:cid',getInfoController)
+router.get('/companyDashboard/:cid',getcompanyDashboard)
+router.get('/companyDashboard/:cid',getcompanyDashboard)
+router.post('/sendEmail',sendEmail)
+router.get('/getApplicationDetails/:cid',getAppliedDetailsController)
 // router.post('/user-block',userBlockController)
 export default router;  

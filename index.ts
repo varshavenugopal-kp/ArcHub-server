@@ -1,6 +1,7 @@
 const express=require('express')
 const mongoose=require('mongoose')
 const cors=require('cors')
+// import {logs} from "node-request-log"
 const cookieParser=require('cookie-parser')
 import userRouter from "./src/Interfaces/routes/userRoutes";
 import companyRouter from "./src/Interfaces/routes/companyRouter"
@@ -17,6 +18,7 @@ import { newMessageRecieved } from "./src/Domain/models/Chat";
 require('dotenv').config();
 
 const app=express()
+// app.use(logs)
 const server=app.listen(3001,()=>{
     console.log("connected");
 })

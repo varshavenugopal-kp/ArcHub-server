@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { adminLoginController, categoryAddController, categoryController, companyBlockController, companyRequestsController, companyUnblockController, requestAcceptController, showCompanyController, showUserController, userBlockController, userUnblockController } from "../controllers/adminController";
+import { adminLoginController, categoryAddController, categoryController, companyBlockController, companyRequestsController, companyUnblockController, dashboardController, requestAcceptController, showCompanyController, showUserController, userBlockController, userUnblockController } from "../controllers/adminController";
 import { adminAuth } from "../middlewares/adminAuth";
 const router = Router();
 
@@ -15,5 +15,6 @@ router.post('/accept-request',adminAuth,requestAcceptController)
 router.post('/accept-request',adminAuth,requestAcceptController)
 router.post('/categoryAdd',adminAuth,categoryAddController)
 router.get('/category-list',adminAuth,categoryController)
+router.get('/dashboardData',adminAuth,dashboardController)
 
 export default router

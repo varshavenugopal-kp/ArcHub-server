@@ -6,6 +6,7 @@ export interface AppliedJobs{
     details?:object
     skills?:string[]
     file?:string
+    status?:boolean
 }
 
 export interface details{
