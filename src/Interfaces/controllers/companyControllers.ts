@@ -426,9 +426,11 @@ export const JobListController=async(req:Request,res:Response)=>{
 }
 export const listJobController=async(req:Request,res:Response)=>{
     const cid=req.params.cid
-    const cId=new mongoose.Types.ObjectId
+    const cId=new mongoose.Types.ObjectId(cid)
     try{
         const jobs=await jobList(JobRepository)(cId)
+        console.log("jobs listed",jobs);
+        
         if(jobs){
             res.json({message:'Data found',jobs})
           }

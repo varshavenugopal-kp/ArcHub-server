@@ -15,6 +15,7 @@ interface updateResult{
 export type companyRepository={
     create:(company:Company)=>Promise<Company|null>;
     loginCompany:(email:string)=>Promise<Company|null>
+    
     showCompany:(page:number)=>Promise<Company[]>
     showCompanies:()=>Promise<Company[]>
     cmpCount:()=>Promise<number[]>
