@@ -35,8 +35,10 @@ export type companyRepository={
     detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
     getCompany:(cid:mongoos.Types.ObjectId)=>Promise<Company|null>
     addServices:(services:Array<object>,cid:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
-    getCompanyList:(cattegory:string)=>Promise<Company[]>
+    getCompanyList:(category:string)=>Promise<Company[]>
     getProjects:(pname:string)=>Promise<Company[]|null>
+    request:(userId:mongoos.Types.ObjectId,cmpId:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult|null>
+    getRequests:(cId:mongoos.Types.ObjectId)=>Promise<Company[]|null>
 }
 
  export const companyRepositoryImpl=(companyModel:MongodbCompany):companyRepository=>{
@@ -197,6 +199,8 @@ export type companyRepository={
         return createdServices
     }
     const getCompanyList=async(category:string):Promise<Company[]>=>{
+        console.log("catId",category);
+        
         const companies=await companyModel.find({
             services: {
               $elemMatch: {
@@ -214,6 +218,16 @@ export type companyRepository={
         
         return getproject
       }
+      const request=async(userId:mongoos.Types.ObjectId,cmpId:mongoos.Types.ObjectId):Promise<UpdateWriteOpResult>=>{
+        const requests=await companyModel.updateOne({_id:cmpId},{$push:{requests:userId}})
+        console.log("good spirit pls come",requests);
+        
+        return requests
+    }
+    const getRequests=async(cId:mongoos.Types.ObjectId):Promise<Company[]|null>=>{
+        const getRequests=await companyModel.find({_id:cId},{requests:1})
+        return getRequests ? getRequests : null;
+    }
     return{
         create,
         loginCompany,
@@ -235,6 +249,8 @@ export type companyRepository={
        getCompany,
        addServices,
        getCompanyList,
-       getProjects
+       getProjects,
+       request,
+       getRequests
     }
  }

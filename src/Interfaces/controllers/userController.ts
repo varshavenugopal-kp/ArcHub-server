@@ -20,7 +20,7 @@ import { getId } from "../../App/usecases/user/GetId";
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
 import { applied, apply } from "../../App/usecases/user/Apply";
-import { addBookmark } from "../../App/usecases/user/AddBookmark";
+import { addBookmark, addRequest } from "../../App/usecases/user/AddBookmark";
 import { removeBookmark } from "../../App/usecases/user/removeBookmark";
 import { getSaved } from "../../App/usecases/user/getSaved";
 import { getCompanies } from "../../App/usecases/user/getCategoryWise";
@@ -249,6 +249,26 @@ export const userLoginController=async(req:Request,res:Response)=>{
     }
    }
 
+   export const requestController=async(req:Request,res:Response)=>{
+    const {userid,cid}=req.body
+    console.log("blaablaa",userid);
+    console.log("blaablaahhh",cid);
+    
+    
+    
+    try{
+     let userId=new mongoose.Types.ObjectId(userid)
+     let cmpId=new mongoose.Types.ObjectId(cid)
+    
+     const request=await addRequest(companyRepository)(userId,cmpId)
+     if(request){
+       res.json({message:'request sent'})
+     }
+     }catch(error){
+       res.status(500).json({ message: "Internal server error" });
+     }
+    }
+
    export const removeBookmarkController=async(req:Request,res:Response)=>{
     const {jobId,uid}= req.body
     console.log("blaablaa",jobId);
@@ -314,12 +334,20 @@ export const userLoginController=async(req:Request,res:Response)=>{
     }
 
     export const getcatWiseController=async(req:Request,res:Response)=>{
-      const {category}=req.body
+      const category=req.params.category
+      console.log("categoryId",category);
+      
+      try{
+      
       const company=await getCompanies(companyRepository)(category)
       console.log("gott",company);
       if(company){
         res.json({message:'Data found',company})
       }
+      }catch(error){
+
+      }
+     
       
     }
 

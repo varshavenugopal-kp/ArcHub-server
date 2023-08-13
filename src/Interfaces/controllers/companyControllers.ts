@@ -29,6 +29,7 @@ import { allapplied, allappliedDetails, applied } from "../../App/usecases/user/
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
 import { getCompany } from "../../App/usecases/user/companyShow";
+import { getRequests } from "../../App/usecases/Company/Requests";
 // import { updateJob } from "../../App/usecases/Company/EditJob";
 // import { editAbout } from "../../App/usecases/Company/EditAbout";
 const jsonwebtoken=require('jsonwebtoken')
@@ -582,3 +583,18 @@ export const sendEmail=async(req:Request,res:Response)=>{
         res.status(500).json({ success: false, error: 'Error sending email' });
       }
     };
+
+    export const getRequestsController=async(req:Request,res:Response)=>{
+        const cid=req.params.cid
+        console.log("cmpId",cid);
+        try{
+            const cId=new mongoose.Types.ObjectId(cid)
+            const requests=await getRequests(companyRepository)(cId)
+            if(requests){
+                res.json({requests});
+            }
+        }catch{
+            
+        }
+        
+    }

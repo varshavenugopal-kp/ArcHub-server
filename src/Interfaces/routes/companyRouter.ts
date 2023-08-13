@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getAppliedDetailsController, getAppliedsController, getInfoController, getServiceController, getcompanyDashboard, imageAddController, jobAddController,
+import {  EditAboutController, JobListController, aboutAddController, categoryController, companyLoginController, companyRegisterController, detailsAddController, detailsController, detailsEditController, getAboutController, getAppliedDetailsController, getAppliedsController, getInfoController, getRequestsController, getServiceController, getcompanyDashboard, imageAddController, jobAddController,
     
     jobEditController,
     
@@ -40,5 +40,6 @@ router.get('/companyDashboard/:cid',getcompanyDashboard)
 router.get('/companyDashboard/:cid',getcompanyDashboard)
 router.post('/sendEmail',sendEmail)
 router.get('/getApplicationDetails/:cid',getAppliedDetailsController)
+router.get('/msgRequests/:cid',getRequestsController)
 // router.post('/user-block',userBlockController)
 export default router;  

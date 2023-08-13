@@ -61,6 +61,9 @@ const companySchema= new Schema<Company>({
     },
     logo:{
         type:String
+    },
+    requests:{
+        type:Array
     }
     
 

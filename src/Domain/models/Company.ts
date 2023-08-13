@@ -17,4 +17,5 @@ export interface Company{
     image?:string
     services?:Array<object>
     logo?:string
+    requests?:string[]
 }
