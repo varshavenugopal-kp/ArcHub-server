@@ -25,7 +25,7 @@ const server=app.listen(3001,()=>{
 const io=require('socket.io')(server , {
     pingTimeout:60000,
     cors:{
-        origin:'http://localhost:3000'
+        origin:['http://localhost:3000',process.env.CLIENT_URL as string]
         // origin:'http://10.4.3.148:3000'
     },
 })
@@ -83,7 +83,7 @@ app.use(express.json())
 
 app.use(errorHandler);
 app.use(cors({
-    origin:["http://localhost:3000"],
+    origin:['http://localhost:3000',process.env.CLIENT_URL as string],
     methods:["GET","POST"],
     credentials:true
 }))
