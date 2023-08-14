@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const userController_1 = require("../controllers/userController");
+const router = (0, express_1.Router)();
+router.post('/register', userController_1.userSignupController);
+router.post('/login', userController_1.userLoginController);
+router.get('/getCategory', userController_1.getCategoryController);
+router.get('/getCompanyDetails/:cid', userController_1.getCompanyController);
+router.get('/getjobs', userController_1.getjobController);
+router.get('/getCompany', userController_1.getCompanylistController);
+router.get('/getjobDetails/:jobId', userController_1.getjobDetailsController);
+router.get('/getId/:jobId', userController_1.getIdController);
+router.post('/jobApplied', userController_1.appliedController);
+router.post('/addBookmark', userController_1.bookmarkController);
+router.post('/bookmarkRemove', userController_1.removeBookmarkController);
+router.get('/getSavedjobs/:userid', userController_1.getSavedController);
+router.get('/getAppliedJobs/:userid', userController_1.getAppliedController);
+router.get('/getCategoryWise/:category', userController_1.getcatWiseController);
+router.get('/getProjectByName/:id', userController_1.getProjectController);
+router.post('/profilepic/:userid', userController_1.profilePicController);
+router.get('/getUserInfo/:userid', userController_1.userInfoController);
+router.post('/check-user', userController_1.checkStudForOtp);
+router.post('/reset-password', userController_1.resestPassword);
+router.post('/updateProfile/:userid', userController_1.updateController);
+router.post('/addRequest', userController_1.requestController);
+// router.post('/resetPassword',resetPasswordController)
+exports.default = router;
