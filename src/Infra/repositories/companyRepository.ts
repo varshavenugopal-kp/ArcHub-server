@@ -33,6 +33,8 @@ export type companyRepository={
     editAbout:(cid:mongoos.Types.ObjectId,data:string)=>Promise<UpdateWriteOpResult>
     // viewAbout:(cId:mongoos.Types.ObjectId)=>Promise<Company|null>
     detailsEdit:(details:object,id:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>;
+    updateCategory:(cId:mongoos.Types.ObjectId,category:string,details:string)=>Promise<UpdateWriteOpResult>;
+    deleteCategory:(cId:mongoos.Types.ObjectId,category:string,details:string)=>Promise<UpdateWriteOpResult>;
     getCompany:(cid:mongoos.Types.ObjectId)=>Promise<Company|null>
     addServices:(services:Array<object>,cid:mongoos.Types.ObjectId)=>Promise<UpdateWriteOpResult>
     getCompanyList:(category:string)=>Promise<Company[]>
@@ -198,6 +200,16 @@ export type companyRepository={
         
         return createdServices
     }
+    const deleteCategory=async(cId:mongoos.Types.ObjectId,category:string,details:string):Promise<UpdateWriteOpResult>=>{
+        console.log("ssss",category);
+        
+        const deletedServices=await companyModel.updateOne({ _id:cId}, { $pull: {services:{category:category} } })
+        console.log("....");
+        console.log(deletedServices);
+        
+        
+        return deletedServices
+    }
     const getCompanyList=async(category:string):Promise<Company[]>=>{
         console.log("catId",category);
         
@@ -228,6 +240,12 @@ export type companyRepository={
         const getRequests=await companyModel.find({_id:cId},{requests:1})
         return getRequests ? getRequests : null;
     }
+    const updateCategory=async(cId:mongoos.Types.ObjectId,category:string,details:string):Promise<UpdateWriteOpResult>=>{
+        const getUpdatedData=await companyModel.updateOne({_id:cId},{$set:{"services.$[element].details":category}},{ arrayFilters: [ { "element.category": "category" } ] })
+        console.log(getUpdatedData);
+        
+        return getUpdatedData
+    }
     return{
         create,
         loginCompany,
@@ -251,6 +269,8 @@ export type companyRepository={
        getCompanyList,
        getProjects,
        request,
-       getRequests
+       getRequests,
+       updateCategory,
+       deleteCategory
     }
  }

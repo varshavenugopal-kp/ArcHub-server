@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateController = exports.resestPassword = exports.checkStudForOtp = exports.userInfoController = exports.profilePicController = exports.getProjectController = exports.getcatWiseController = exports.getAppliedController = exports.getSavedController = exports.removeBookmarkController = exports.requestController = exports.bookmarkController = exports.appliedController = exports.getIdController = exports.getjobDetailsController = exports.getCompanyController = exports.getCompanylistController = exports.getjobController = exports.getCategoryController = exports.userLoginController = exports.userSignupController = void 0;
+exports.updateController = exports.resestPassword = exports.checkStudForOtp = exports.userInfoController = exports.profilePicController = exports.getProjectController = exports.getcatWiseController = exports.AppliedController = exports.getAppliedController = exports.getSavedController = exports.removeBookmarkController = exports.requestController = exports.bookmarkController = exports.appliedController = exports.getIdController = exports.getjobDetailsController = exports.getCompanyController = exports.getCompanylistController = exports.getjobController = exports.getCategoryController = exports.userLoginController = exports.userSignupController = void 0;
 const userModel_1 = require("../../Infra/database/userModel");
 const userRepository_1 = require("../../Infra/repositories/userRepository");
 const signupUse_1 = require("../../App/usecases/user/signupUse");
@@ -307,6 +307,23 @@ const getAppliedController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getAppliedController = getAppliedController;
+const AppliedController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+    const userid = req.query.userid;
+    const jobId = req.query.jobId;
+    console.log("nnnnnnnnnnnnnn", userid);
+    const userId = new mongoose_1.default.Types.ObjectId(userid);
+    const jobid = new mongoose_1.default.Types.ObjectId(jobId);
+    const getApplied = yield (0, Apply_1.appliedjobs)(applyRepository)(userId, jobid);
+    console.log(getApplied, "kkkk");
+    if (getApplied) {
+        res.json({ job: true, getApplied });
+    }
+    else {
+        res.json({ job: false });
+    }
+});
+exports.AppliedController = AppliedController;
 const getcatWiseController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const category = req.params.category;
     console.log("categoryId", category);
@@ -414,10 +431,16 @@ const resestPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.resestPassword = resestPassword;
 const updateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userid = req.params.userid;
-    const { fname, lname, email, image } = req.body;
+    console.log(userid, "kkkkkkkkk");
+    const { data } = req.body;
+    console.log(data.fname);
+    console.log(data.lname);
+    console.log(data.email);
+    console.log(data.image);
+    // console.log(uId);
     console.log(req.body);
     try {
-        const updatedData = yield (0, UpdateProfile_1.updateProfile)(userRepository)(fname, lname, email, image, userid);
+        const updatedData = yield (0, UpdateProfile_1.updateProfile)(userRepository)(data.fname, data.lname, data.email, data.image, userid);
         res.status(201).json({ message: 'successfull', updatedData });
     }
     catch (error) {

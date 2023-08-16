@@ -66,7 +66,10 @@ socket.on('new message',(newMessageReceived:newMessageRecieved)=>{
  if(chat?._id===newMessageReceived.user?._id) return 
  socket.in(chat?.user._id).emit('message recieved',newMessageReceived);
  
- if(chat?._id===newMessageReceived.company?._id) return
+socket.on("typing",(currentId: string) => socket.to(currentId).emit("typing"))
+socket.on("stoptyping",(currentId: string) => socket.to(currentId).emit("stoptyping"))
+
+ if(chat?._id===newMessageReceived.company?._id) return 
  socket.in(chat?.company._id).emit('message recieved',newMessageReceived)
  })
 })

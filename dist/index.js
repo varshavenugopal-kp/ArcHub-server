@@ -62,6 +62,8 @@ io.on("connection", (socket) => {
         if ((chat === null || chat === void 0 ? void 0 : chat._id) === ((_d = newMessageReceived.user) === null || _d === void 0 ? void 0 : _d._id))
             return;
         socket.in(chat === null || chat === void 0 ? void 0 : chat.user._id).emit('message recieved', newMessageReceived);
+        socket.on("typing", (currentId) => socket.to(currentId).emit("typing"));
+        socket.on("stoptyping", (currentId) => socket.to(currentId).emit("stoptyping"));
         if ((chat === null || chat === void 0 ? void 0 : chat._id) === ((_e = newMessageReceived.company) === null || _e === void 0 ? void 0 : _e._id))
             return;
         socket.in(chat === null || chat === void 0 ? void 0 : chat.company._id).emit('message recieved', newMessageReceived);

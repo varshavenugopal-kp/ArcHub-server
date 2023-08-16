@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { userAuth} from '../middlewares/UserAuth'
-import { appliedController, bookmarkController, checkStudForOtp, getAppliedController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getProjectController, getSavedController, getcatWiseController, getjobController, getjobDetailsController, profilePicController, removeBookmarkController, requestController, resestPassword, updateController, userInfoController, userLoginController, userSignupController } from "../controllers/userController";
+import { AppliedController, appliedController, bookmarkController, checkStudForOtp, getAppliedController, getCategoryController, getCompanyController, getCompanylistController, getIdController, getProjectController, getSavedController, getcatWiseController, getjobController, getjobDetailsController, profilePicController, removeBookmarkController, requestController, resestPassword, updateController, userInfoController, userLoginController, userSignupController } from "../controllers/userController";
 const router = Router();
 
 router.post('/register',userSignupController);
@@ -16,6 +16,7 @@ router.post('/addBookmark',bookmarkController)
 router.post('/bookmarkRemove',removeBookmarkController)
 router.get('/getSavedjobs/:userid',getSavedController)
 router.get('/getAppliedJobs/:userid',getAppliedController)
+router.get('/getApplieds',AppliedController)
 router.get('/getCategoryWise/:category',getcatWiseController)
 router.get('/getProjectByName/:id',getProjectController)
 router.post('/profilepic/:userid',profilePicController)

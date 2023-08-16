@@ -71,7 +71,13 @@ const UserRepositoryImpl = (userModel) => {
     });
     const update = (fname, lname, email, image, uId) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = new mongoose_1.default.Types.ObjectId(uId);
+        console.log(fname);
+        console.log(lname);
+        console.log(email);
+        console.log(image);
+        console.log(uId);
         const result = yield userModel.updateOne({ _id: userId }, { $set: { fname: fname, lname: lname, email: email, } });
+        console.log("failll", result);
         if (result.modifiedCount > 0) {
             console.log('successful');
             return result;
