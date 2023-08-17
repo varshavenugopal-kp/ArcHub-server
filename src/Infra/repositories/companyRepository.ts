@@ -241,7 +241,11 @@ export type companyRepository={
         return getRequests ? getRequests : null;
     }
     const updateCategory=async(cId:mongoos.Types.ObjectId,category:string,details:string):Promise<UpdateWriteOpResult>=>{
-        const getUpdatedData=await companyModel.updateOne({_id:cId},{$set:{"services.$[element].details":category}},{ arrayFilters: [ { "element.category": "category" } ] })
+        console.log(cId);
+        console.log(category);
+        console.log(details);
+        
+        const getUpdatedData=await companyModel.updateOne({_id:cId,"services.category":category},{$set:{"services.$.details":details}})
         console.log(getUpdatedData);
         
         return getUpdatedData

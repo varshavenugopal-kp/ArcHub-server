@@ -601,13 +601,13 @@ export const sendEmail=async(req:Request,res:Response)=>{
     export const  serviceEdit=async(req:Request,res:Response)=>{
         const {details,categories,cid}=req.body
         console.log("serrrviicessss",details);
-
-        console.log("serrrviicessss",categories);
+        const category=categories.category
+        console.log("serrrviicessss",category);
         console.log("serrrviicessss",cid);
         
         try{
             const cId=new mongoose.Types.ObjectId(cid)
-            const updateddata=await getUpdatedCategory(companyRepository)(cId,categories,details)
+            const updateddata=await getUpdatedCategory(companyRepository)(cId,category,details)
             if(updateddata){
                 res.json({updateddata})
             }
@@ -618,13 +618,13 @@ export const sendEmail=async(req:Request,res:Response)=>{
     export const  serviceDelete=async(req:Request,res:Response)=>{
         const {details,categories,cid}=req.body
         console.log("deleeet",details);
-        
+        const category=categories.category
         console.log("delete",categories);
         console.log("delete",cid);
         
         try{
             const cId=new mongoose.Types.ObjectId(cid)
-            const deleteddata=await getdeletedCategory(companyRepository)(cId,categories,details)
+            const deleteddata=await getdeletedCategory(companyRepository)(cId,category,details)
             if(deleteddata){
                 res.json({deleteddata})
             }

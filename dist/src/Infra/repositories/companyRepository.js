@@ -165,7 +165,10 @@ const companyRepositoryImpl = (companyModel) => {
         return getRequests ? getRequests : null;
     });
     const updateCategory = (cId, category, details) => __awaiter(void 0, void 0, void 0, function* () {
-        const getUpdatedData = yield companyModel.updateOne({ _id: cId }, { $set: { "services.$[element].details": category } }, { arrayFilters: [{ "element.category": "category" }] });
+        console.log(cId);
+        console.log(category);
+        console.log(details);
+        const getUpdatedData = yield companyModel.updateOne({ _id: cId, "services.category": category }, { $set: { "services.$.details": details } });
         console.log(getUpdatedData);
         return getUpdatedData;
     });

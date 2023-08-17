@@ -52,7 +52,7 @@ const ChatRepositoryImpl = (ChatModel) => {
     const getAllUserChats = (userId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const userid = new mongoose_1.default.Types.ObjectId(userId);
-            const chats = ChatModel.find({ user: userid }).populate("user", "-password").populate("latestMessage").sort({ updatedAt: -1 });
+            const chats = ChatModel.find({ user: userid }).populate("company", "-password").populate("latestMessage").sort({ updatedAt: -1 });
             return chats;
         }
         catch (error) {
@@ -65,7 +65,7 @@ const ChatRepositoryImpl = (ChatModel) => {
             const cid = new mongoose_1.default.Types.ObjectId(cId);
             console.log('cid=', cId);
             // const cId= new mongoose.Types.ObjectId(cId)
-            const chats = ChatModel.find({ company: cid }).populate("company", "-password").populate("latestMessage").sort({ updatedAt: -1 });
+            const chats = ChatModel.find({ company: cid }).populate("user", "-password").populate("latestMessage").sort({ updatedAt: -1 });
             // console.log("detailsss",chats);
             return chats;
         }

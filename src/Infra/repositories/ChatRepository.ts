@@ -52,7 +52,7 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
                
                     {user:userid}
                   
-            ).populate("user","-password").populate("latestMessage").sort({updatedAt:-1});
+            ).populate("company","-password").populate("latestMessage").sort({updatedAt:-1});
              return chats
         }catch (error) {
             console.error('Error creating course:', error);  
@@ -69,7 +69,7 @@ export const ChatRepositoryImpl=(ChatModel:MongodbChat):ChatRepository=>{
     
                     {company:cid}
                    
-            ).populate("company","-password").populate("latestMessage").sort({updatedAt:-1});
+            ).populate("user","-password").populate("latestMessage").sort({updatedAt:-1});
             // console.log("detailsss",chats);
             
              return chats

@@ -531,11 +531,12 @@ exports.getRequestsController = getRequestsController;
 const serviceEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { details, categories, cid } = req.body;
     console.log("serrrviicessss", details);
-    console.log("serrrviicessss", categories);
+    const category = categories.category;
+    console.log("serrrviicessss", category);
     console.log("serrrviicessss", cid);
     try {
         const cId = new mongoose_1.default.Types.ObjectId(cid);
-        const updateddata = yield (0, editDetails_1.getUpdatedCategory)(companyRepository)(cId, categories, details);
+        const updateddata = yield (0, editDetails_1.getUpdatedCategory)(companyRepository)(cId, category, details);
         if (updateddata) {
             res.json({ updateddata });
         }
@@ -547,11 +548,12 @@ exports.serviceEdit = serviceEdit;
 const serviceDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { details, categories, cid } = req.body;
     console.log("deleeet", details);
+    const category = categories.category;
     console.log("delete", categories);
     console.log("delete", cid);
     try {
         const cId = new mongoose_1.default.Types.ObjectId(cid);
-        const deleteddata = yield (0, editDetails_1.getdeletedCategory)(companyRepository)(cId, categories, details);
+        const deleteddata = yield (0, editDetails_1.getdeletedCategory)(companyRepository)(cId, category, details);
         if (deleteddata) {
             res.json({ deleteddata });
         }
