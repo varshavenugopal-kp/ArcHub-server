@@ -10,7 +10,7 @@ const ConnectionOptions:  ConnectOptions|any={
 
 export const connectToDatabase = async (): Promise<void> => {
     try {
-      await mongoose.connect('mongodb://127.0.0.1:27017/ArcHub', ConnectionOptions);
+      await mongoose.connect(process.env.MONGO_CONNECTION as string, ConnectionOptions);
       console.log('Connected to MongoDB');
       
     } catch (error) {

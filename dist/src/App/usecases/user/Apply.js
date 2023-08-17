@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allappliedDetails = exports.allapplied = exports.applied = exports.apply = void 0;
+exports.allappliedDetails = exports.allapplied = exports.appliedjobs = exports.applied = exports.apply = void 0;
 const apply = (applyRepository) => (cId, jobId, userId, details, skills, file) => __awaiter(void 0, void 0, void 0, function* () {
     const applies = {
         cId,
@@ -33,6 +33,11 @@ const applied = (applyRepository) => (userId) => __awaiter(void 0, void 0, void 
     return applied;
 });
 exports.applied = applied;
+const appliedjobs = (applyRepository) => (userId, jobid) => __awaiter(void 0, void 0, void 0, function* () {
+    const applied = yield applyRepository.getAppliedjobs(userId, jobid);
+    return applied;
+});
+exports.appliedjobs = appliedjobs;
 const allapplied = (applyRepository) => (cid) => __awaiter(void 0, void 0, void 0, function* () {
     const applied = yield applyRepository.getAllApplied(cid);
     return applied ? applied : null;

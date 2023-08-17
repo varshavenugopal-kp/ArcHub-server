@@ -29,6 +29,11 @@ const applyRepositoryImpl = (AppliedModel) => {
         //   console.log("fhghgh")
         //   return jobs
     });
+    const getAppliedjobs = (userId, jobid) => __awaiter(void 0, void 0, void 0, function* () {
+        const jobs = yield AppliedModel.findOne({ userId: userId, jobId: jobid });
+        console.log("kaaaaa", jobs);
+        return jobs;
+    });
     const getAllApplied = (cid) => __awaiter(void 0, void 0, void 0, function* () {
         const jobs = yield AppliedModel.aggregate([{ $match: { cId: cid } },
             {
@@ -60,6 +65,7 @@ const applyRepositoryImpl = (AppliedModel) => {
     return {
         create,
         getApplied,
+        getAppliedjobs,
         getAllApplied,
         getAllAppliedDetails
     };

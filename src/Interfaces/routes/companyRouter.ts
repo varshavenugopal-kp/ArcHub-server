@@ -7,7 +7,7 @@ import {  EditAboutController, JobListController, aboutAddController, categoryCo
     
     logoAddController,
     
-    projectAddController, projectController, sendEmail, serviceController, singleJobController } from "../controllers/companyControllers";
+    projectAddController, projectController, sendEmail, serviceController, serviceDelete, serviceEdit, singleJobController } from "../controllers/companyControllers";
 import { userBlockController } from "../controllers/adminController";
 import { companyAuth } from "../middlewares/companyAuth";
 import { adminAuth } from "../middlewares/adminAuth";
@@ -41,5 +41,7 @@ router.get('/companyDashboard/:cid',getcompanyDashboard)
 router.post('/sendEmail',sendEmail)
 router.get('/getApplicationDetails/:cid',getAppliedDetailsController)
 router.get('/msgRequests/:cid',getRequestsController)
+router.post('/editService',serviceEdit)
+router.post('/deleteService',serviceDelete)
 // router.post('/user-block',userBlockController)
 export default router;  

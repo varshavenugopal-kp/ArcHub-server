@@ -9,9 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editDetails = void 0;
+exports.getdeletedCategory = exports.getUpdatedCategory = exports.editDetails = void 0;
 const editDetails = (companyRepository) => (cId, details) => __awaiter(void 0, void 0, void 0, function* () {
     const createDetails = yield companyRepository.detailsEdit(details, cId);
     return createDetails;
 });
 exports.editDetails = editDetails;
+const getUpdatedCategory = (companyRepository) => (cId, categories, details) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedCategory = yield companyRepository.updateCategory(cId, categories, details);
+    return updatedCategory;
+});
+exports.getUpdatedCategory = getUpdatedCategory;
+const getdeletedCategory = (companyRepository) => (cId, categories, details) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedCategory = yield companyRepository.deleteCategory(cId, categories, details);
+    return updatedCategory;
+});
+exports.getdeletedCategory = getdeletedCategory;

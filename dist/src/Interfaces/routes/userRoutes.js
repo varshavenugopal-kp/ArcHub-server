@@ -16,6 +16,7 @@ router.post('/addBookmark', userController_1.bookmarkController);
 router.post('/bookmarkRemove', userController_1.removeBookmarkController);
 router.get('/getSavedjobs/:userid', userController_1.getSavedController);
 router.get('/getAppliedJobs/:userid', userController_1.getAppliedController);
+router.get('/getApplieds', userController_1.AppliedController);
 router.get('/getCategoryWise/:category', userController_1.getcatWiseController);
 router.get('/getProjectByName/:id', userController_1.getProjectController);
 router.post('/profilepic/:userid', userController_1.profilePicController);

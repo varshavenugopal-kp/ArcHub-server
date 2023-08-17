@@ -19,7 +19,7 @@ import { getCompany } from "../../App/usecases/user/companyShow";
 import { getId } from "../../App/usecases/user/GetId";
 import { AppliedModel } from "../../Infra/database/AppliedModel";
 import { applyRepositoryImpl } from "../../Infra/repositories/applyRepository";
-import { applied, apply } from "../../App/usecases/user/Apply";
+import { applied, appliedjobs, apply } from "../../App/usecases/user/Apply";
 import { addBookmark, addRequest } from "../../App/usecases/user/AddBookmark";
 import { removeBookmark } from "../../App/usecases/user/removeBookmark";
 import { getSaved } from "../../App/usecases/user/getSaved";
@@ -327,11 +327,26 @@ export const userLoginController=async(req:Request,res:Response)=>{
      if(getApplied){
       res.json({message:'Data found',getApplied})
     }
-     
+}
 
-      
+export const AppliedController=async(req:Request,res:Response)=>{
+  console.log("sdfghjkjhgcvjvcvhjhgcjhgchjhc");
+  
+  const userid=req.query.userid as string
+  const jobId=req.query.jobId as string
+  console.log("nnnnnnnnnnnnnn",userid);
+  
+ const userId=new mongoose.Types.ObjectId(userid)
+ const jobid=new mongoose.Types.ObjectId(jobId)
+ const getApplied=await appliedjobs(applyRepository)(userId,jobid)
+ console.log(getApplied,"kkkk");
 
-    }
+ if(getApplied){
+  res.json({job:true,getApplied})
+}else{
+  res.json({job:false})
+}
+}
 
     export const getcatWiseController=async(req:Request,res:Response)=>{
       const category=req.params.category
@@ -452,11 +467,18 @@ export const resestPassword = async(req:Request,res:Response)=>{
 } 
 export const updateController=async(req:Request,res:Response)=>{
   const userid=req.params.userid
-  const {fname,lname,email,image}=req.body
+  console.log(userid,"kkkkkkkkk");
+  
+  const {data}=req.body
+  console.log(data.fname);
+    console.log(data.lname);
+    console.log(data.email);
+    console.log(data.image);
+    // console.log(uId);
   console.log(req.body);
   
   try{
-    const updatedData=await updateProfile(userRepository)(fname,lname,email,image,userid)
+    const updatedData=await updateProfile(userRepository)(data.fname,data.lname,data.email,data.image,userid)
     res.status(201).json({message:'successfull',updatedData}) 
   }catch(error){
     

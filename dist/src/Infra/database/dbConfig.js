@@ -20,7 +20,7 @@ const ConnectionOptions = {
 };
 const connectToDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect('mongodb://127.0.0.1:27017/ArcHub', ConnectionOptions);
+        yield mongoose_1.default.connect(process.env.MONGO_CONNECTION, ConnectionOptions);
         console.log('Connected to MongoDB');
     }
     catch (error) {

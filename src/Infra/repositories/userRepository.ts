@@ -82,7 +82,15 @@ export type UserRepository={
   }
   const update = async(fname:string,lname:string,email:string,image:string,uId:string): Promise<UpdateWriteOpResult >=>{
     const userId=new mongoos.Types.ObjectId(uId);
+    console.log(fname);
+    console.log(lname);
+    console.log(email);
+    console.log(image);
+    console.log(uId);
+    
     const result = await userModel.updateOne({_id:userId},{$set:{fname:fname,lname:lname,email:email,}});
+    console.log("failll",result);
+    
     if(result.modifiedCount>0){
         console.log('successful');
         

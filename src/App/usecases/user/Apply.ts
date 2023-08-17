@@ -25,6 +25,10 @@ export const applied=(applyRepository:applyRepository)=>async(userId:mongoose.Ty
     const applied=await applyRepository.getApplied(userId)
     return applied
 }
+export const appliedjobs=(applyRepository:applyRepository)=>async(userId:mongoose.Types.ObjectId,jobid:mongoose.Types.ObjectId)=>{
+    const applied=await applyRepository.getAppliedjobs(userId,jobid)
+    return applied
+}
 export const allapplied=(applyRepository:applyRepository)=>async(cid:mongoose.Types.ObjectId)=>{
     const applied=await applyRepository.getAllApplied(cid)
     return applied?applied:null

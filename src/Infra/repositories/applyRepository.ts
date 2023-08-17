@@ -8,6 +8,7 @@ export type applyRepository={
  create:(applies:AppliedJobs)=>Promise<AppliedJobs|null>
  
  getApplied:(userId:mongoos.Types.ObjectId)=>Promise<AppliedJobs[]>
+ getAppliedjobs:(userId:mongoos.Types.ObjectId,jobid:mongoos.Types.ObjectId)=>Promise<AppliedJobs|null>
  getAllApplied:(cid:mongoos.Types.ObjectId)=>Promise<AppliedJobs[]>
  getAllAppliedDetails:(cid:mongoos.Types.ObjectId,uId:mongoos.Types.ObjectId)=>Promise<AppliedJobs[]>
 }
@@ -30,6 +31,12 @@ export const applyRepositoryImpl=(AppliedModel:MongodbApplied):applyRepository=>
     // const jobs=await AppliedModel.find({userId:userId})
     //   console.log("fhghgh")
     //   return jobs
+    }
+    const getAppliedjobs=async(userId:mongoos.Types.ObjectId,jobid:mongoos.Types.ObjectId):Promise<AppliedJobs|null>=>{
+       const jobs=await AppliedModel.findOne({userId:userId,jobId:jobid})
+       console.log("kaaaaa",jobs);
+       
+       return jobs
     }
     const getAllApplied=async(cid:mongoos.Types.ObjectId):Promise<AppliedJobs[]>=>{
       const jobs=await AppliedModel.aggregate([{$match:{cId:cid}},
@@ -60,6 +67,7 @@ export const applyRepositoryImpl=(AppliedModel:MongodbApplied):applyRepository=>
     return{
       create,
       getApplied,
+      getAppliedjobs,
       getAllApplied,
       getAllAppliedDetails
     }

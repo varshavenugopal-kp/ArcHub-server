@@ -17,7 +17,7 @@ import { viewDetails } from "../../App/usecases/Company/ViewDetails";
 import { viewProjects } from "../../App/usecases/Company/ViewProjects";
 import { addImage, addlogo } from "../../App/usecases/Company/Addimage";
 import { editAbout } from "../../App/usecases/Company/EditAbout";
-import { editDetails } from "../../App/usecases/Company/editDetails";
+import { editDetails, getUpdatedCategory, getdeletedCategory } from "../../App/usecases/Company/editDetails";
 import { getCategories } from "../../App/usecases/user/CategoryList";
 import { categoryModel } from "../../Infra/database/Category";
 import { CategoryRepositoryImpl } from "../../Infra/repositories/CategoryRepository";
@@ -597,4 +597,38 @@ export const sendEmail=async(req:Request,res:Response)=>{
             
         }
         
+    }
+    export const  serviceEdit=async(req:Request,res:Response)=>{
+        const {details,categories,cid}=req.body
+        console.log("serrrviicessss",details);
+
+        console.log("serrrviicessss",categories);
+        console.log("serrrviicessss",cid);
+        
+        try{
+            const cId=new mongoose.Types.ObjectId(cid)
+            const updateddata=await getUpdatedCategory(companyRepository)(cId,categories,details)
+            if(updateddata){
+                res.json({updateddata})
+            }
+        }catch(error){
+
+        }
+    }
+    export const  serviceDelete=async(req:Request,res:Response)=>{
+        const {details,categories,cid}=req.body
+        console.log("deleeet",details);
+        
+        console.log("delete",categories);
+        console.log("delete",cid);
+        
+        try{
+            const cId=new mongoose.Types.ObjectId(cid)
+            const deleteddata=await getdeletedCategory(companyRepository)(cId,categories,details)
+            if(deleteddata){
+                res.json({deleteddata})
+            }
+        }catch(error){
+
+        }
     }

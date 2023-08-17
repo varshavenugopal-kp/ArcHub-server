@@ -131,6 +131,13 @@ const companyRepositoryImpl = (companyModel) => {
         console.log("....", services);
         return createdServices;
     });
+    const deleteCategory = (cId, category, details) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("ssss", category);
+        const deletedServices = yield companyModel.updateOne({ _id: cId }, { $pull: { services: { category: category } } });
+        console.log("....");
+        console.log(deletedServices);
+        return deletedServices;
+    });
     const getCompanyList = (category) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("catId", category);
         const companies = yield companyModel.find({
@@ -157,6 +164,11 @@ const companyRepositoryImpl = (companyModel) => {
         const getRequests = yield companyModel.find({ _id: cId }, { requests: 1 });
         return getRequests ? getRequests : null;
     });
+    const updateCategory = (cId, category, details) => __awaiter(void 0, void 0, void 0, function* () {
+        const getUpdatedData = yield companyModel.updateOne({ _id: cId }, { $set: { "services.$[element].details": category } }, { arrayFilters: [{ "element.category": "category" }] });
+        console.log(getUpdatedData);
+        return getUpdatedData;
+    });
     return {
         create,
         loginCompany,
@@ -180,7 +192,9 @@ const companyRepositoryImpl = (companyModel) => {
         getCompanyList,
         getProjects,
         request,
-        getRequests
+        getRequests,
+        updateCategory,
+        deleteCategory
     };
 };
 exports.companyRepositoryImpl = companyRepositoryImpl;

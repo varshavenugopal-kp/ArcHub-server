@@ -31,5 +31,7 @@ router.get('/companyDashboard/:cid', companyControllers_1.getcompanyDashboard);
 router.post('/sendEmail', companyControllers_1.sendEmail);
 router.get('/getApplicationDetails/:cid', companyControllers_1.getAppliedDetailsController);
 router.get('/msgRequests/:cid', companyControllers_1.getRequestsController);
+router.post('/editService', companyControllers_1.serviceEdit);
+router.post('/deleteService', companyControllers_1.serviceDelete);
 // router.post('/user-block',userBlockController)
 exports.default = router;

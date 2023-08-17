@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRequestsController = exports.sendEmail = exports.getcompanyDashboard = exports.getInfoController = exports.getAppliedDetailsController = exports.getAppliedsController = exports.jobEditController = exports.singleJobController = exports.listJobController = exports.JobListController = exports.getServiceController = exports.serviceController = exports.categoryController = exports.EditAboutController = exports.getAboutController = exports.detailsEditController = exports.logoAddController = exports.imageAddController = exports.projectController = exports.detailsController = exports.aboutAddController = exports.detailsAddController = exports.projectAddController = exports.jobAddController = exports.companyLoginController = exports.companyRegisterController = void 0;
+exports.serviceDelete = exports.serviceEdit = exports.getRequestsController = exports.sendEmail = exports.getcompanyDashboard = exports.getInfoController = exports.getAppliedDetailsController = exports.getAppliedsController = exports.jobEditController = exports.singleJobController = exports.listJobController = exports.JobListController = exports.getServiceController = exports.serviceController = exports.categoryController = exports.EditAboutController = exports.getAboutController = exports.detailsEditController = exports.logoAddController = exports.imageAddController = exports.projectController = exports.detailsController = exports.aboutAddController = exports.detailsAddController = exports.projectAddController = exports.jobAddController = exports.companyLoginController = exports.companyRegisterController = void 0;
 const companyModel_1 = require("../../Infra/database/companyModel");
 const Csignup_1 = require("../../App/usecases/Company/Csignup");
 const companyRepository_1 = require("../../Infra/repositories/companyRepository");
@@ -41,6 +41,7 @@ const addAbout_1 = require("../../App/usecases/Company/addAbout");
 const ViewDetails_1 = require("../../App/usecases/Company/ViewDetails");
 const Addimage_1 = require("../../App/usecases/Company/Addimage");
 const EditAbout_1 = require("../../App/usecases/Company/EditAbout");
+const editDetails_1 = require("../../App/usecases/Company/editDetails");
 const CategoryList_1 = require("../../App/usecases/user/CategoryList");
 const Category_1 = require("../../Infra/database/Category");
 const CategoryRepository_1 = require("../../Infra/repositories/CategoryRepository");
@@ -527,3 +528,35 @@ const getRequestsController = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.getRequestsController = getRequestsController;
+const serviceEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { details, categories, cid } = req.body;
+    console.log("serrrviicessss", details);
+    console.log("serrrviicessss", categories);
+    console.log("serrrviicessss", cid);
+    try {
+        const cId = new mongoose_1.default.Types.ObjectId(cid);
+        const updateddata = yield (0, editDetails_1.getUpdatedCategory)(companyRepository)(cId, categories, details);
+        if (updateddata) {
+            res.json({ updateddata });
+        }
+    }
+    catch (error) {
+    }
+});
+exports.serviceEdit = serviceEdit;
+const serviceDelete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { details, categories, cid } = req.body;
+    console.log("deleeet", details);
+    console.log("delete", categories);
+    console.log("delete", cid);
+    try {
+        const cId = new mongoose_1.default.Types.ObjectId(cid);
+        const deleteddata = yield (0, editDetails_1.getdeletedCategory)(companyRepository)(cId, categories, details);
+        if (deleteddata) {
+            res.json({ deleteddata });
+        }
+    }
+    catch (error) {
+    }
+});
+exports.serviceDelete = serviceDelete;

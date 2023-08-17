@@ -11,6 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProfile = void 0;
 const updateProfile = (UserRepository) => (fname, lname, email, image, uId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(fname);
+    console.log(lname);
+    console.log(email);
+    console.log(image);
+    console.log(uId);
     const data = yield UserRepository.update(fname, lname, email, image, uId);
     return data;
 });
