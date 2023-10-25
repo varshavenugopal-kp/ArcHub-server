@@ -14,16 +14,9 @@ export const companyAuth = (req: Request, res: Response, next: NextFunction) => 
         
         let cmpToken = req.headers.cmptoken
         let JWT_SECRET = process.env.JWT_SECRET as string
-        console.log("Helloooooo");
-        
-        // console.log("token??",cmpToken);
-        // console.log("ghgh",req.headers);
-        
-    
-        
-        
+       
         if (cmpToken) {
-            console.log("token",req.headers);
+           
             cmpToken = cmpToken.toString()
             let decoded = jwt.verify(cmpToken, JWT_SECRET) as CAuth
             const currentTimestamp = Math.floor(Date.now() / 1000);

@@ -202,10 +202,7 @@ export const userLoginController=async(req:Request,res:Response)=>{
  export const appliedController=async(req:Request,res:Response)=>{
   console.log("pleaaase comee",req.body);
   const {firstName,lastName,email,phone,qualification,experience,date,skills,jobid,cid,file,userId}=req.body
-  console.log("lklklklkllklkllklkllklll",cid);
-  console.log("lklklklkllklkllklkllklll",jobid);
-  console.log("lklklklkllklkllklkllklll",userId);
-  
+ 
    try{
     let cmpnyId=new mongoose.Types.ObjectId(cid)
     const userid=new mongoose.Types.ObjectId(userId)

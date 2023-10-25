@@ -24,14 +24,14 @@ router.get('/jobList', companyAuth_1.companyAuth, companyControllers_1.JobListCo
 router.get('/listJob/:cid', companyAuth_1.companyAuth, companyControllers_1.listJobController);
 router.get('/singleJob/:jobId', companyAuth_1.companyAuth, companyControllers_1.singleJobController);
 router.post('/editJob', companyAuth_1.companyAuth, companyControllers_1.jobEditController);
-router.get('/getApplications/:cid', companyControllers_1.getAppliedsController);
-router.get('/getCompanyInfo/:cid', companyControllers_1.getInfoController);
-router.get('/companyDashboard/:cid', companyControllers_1.getcompanyDashboard);
-router.get('/companyDashboard/:cid', companyControllers_1.getcompanyDashboard);
+router.get('/getApplications/:cid', companyAuth_1.companyAuth, companyControllers_1.getAppliedsController);
+router.get('/getCompanyInfo/:cid', companyAuth_1.companyAuth, companyControllers_1.getInfoController);
+router.get('/companyDashboard/:cid', companyAuth_1.companyAuth, companyControllers_1.getcompanyDashboard);
+router.get('/companyDashboard/:cid', companyAuth_1.companyAuth, companyControllers_1.getcompanyDashboard);
 router.post('/sendEmail', companyControllers_1.sendEmail);
-router.get('/getApplicationDetails/:cid', companyControllers_1.getAppliedDetailsController);
-router.get('/msgRequests/:cid', companyControllers_1.getRequestsController);
-router.post('/editService', companyControllers_1.serviceEdit);
-router.post('/deleteService', companyControllers_1.serviceDelete);
+router.get('/getApplicationDetails/:cid', companyAuth_1.companyAuth, companyControllers_1.getAppliedDetailsController);
+router.get('/msgRequests/:cid', companyAuth_1.companyAuth, companyControllers_1.getRequestsController);
+router.post('/editService', companyAuth_1.companyAuth, companyControllers_1.serviceEdit);
+router.post('/deleteService', companyAuth_1.companyAuth, companyControllers_1.serviceDelete);
 // router.post('/user-block',userBlockController)
 exports.default = router;

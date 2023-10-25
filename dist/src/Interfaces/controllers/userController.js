@@ -193,9 +193,6 @@ exports.getIdController = getIdController;
 const appliedController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("pleaaase comee", req.body);
     const { firstName, lastName, email, phone, qualification, experience, date, skills, jobid, cid, file, userId } = req.body;
-    console.log("lklklklkllklkllklkllklll", cid);
-    console.log("lklklklkllklkllklkllklll", jobid);
-    console.log("lklklklkllklkllklkllklll", userId);
     try {
         let cmpnyId = new mongoose_1.default.Types.ObjectId(cid);
         const userid = new mongoose_1.default.Types.ObjectId(userId);

@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ChatController_1 = require("../controllers/ChatController");
+const UserAuth_1 = require("../middlewares/UserAuth");
+const companyAuth_1 = require("../middlewares/companyAuth");
 const router = (0, express_1.Router)();
 router.post('/access-chat', ChatController_1.accessChatController);
-router.get('/user-chat/:userid', ChatController_1.fetchUserChatController);
-router.get('/company-chat/:cid', ChatController_1.fetchCompanyChatController);
+router.get('/user-chat/:userid', UserAuth_1.userAuth, ChatController_1.fetchUserChatController);
+router.get('/company-chat/:cid', companyAuth_1.companyAuth, ChatController_1.fetchCompanyChatController);
 exports.default = router;

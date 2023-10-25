@@ -9,11 +9,7 @@ const companyAuth = (req, res, next) => {
     try {
         let cmpToken = req.headers.cmptoken;
         let JWT_SECRET = process.env.JWT_SECRET;
-        console.log("Helloooooo");
-        // console.log("token??",cmpToken);
-        // console.log("ghgh",req.headers);
         if (cmpToken) {
-            console.log("token", req.headers);
             cmpToken = cmpToken.toString();
             let decoded = jsonwebtoken_1.default.verify(cmpToken, JWT_SECRET);
             const currentTimestamp = Math.floor(Date.now() / 1000);

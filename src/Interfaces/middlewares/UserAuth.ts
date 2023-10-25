@@ -12,13 +12,9 @@ export const userAuth = (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log("mmmmm");
         
-        let userToken = req.headers.userToken
+        let userToken = req.headers.usertoken
         let JWT = process.env.JWT_SECRET as string
-        console.log("usertoken?",userToken);
-        console.log("hooo",req.headers);
-        
-        
-
+       
         if (userToken) {
             userToken = userToken.toString()
             let decoded = jwt.verify(userToken, JWT) as Auth

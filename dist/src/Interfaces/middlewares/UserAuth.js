@@ -8,10 +8,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userAuth = (req, res, next) => {
     try {
         console.log("mmmmm");
-        let userToken = req.headers.userToken;
+        let userToken = req.headers.usertoken;
         let JWT = process.env.JWT_SECRET;
-        console.log("usertoken?", userToken);
-        console.log("hooo", req.headers);
         if (userToken) {
             userToken = userToken.toString();
             let decoded = jsonwebtoken_1.default.verify(userToken, JWT);
